@@ -1,0 +1,51 @@
+<header class="nav" [class.nav--scrolled]="scrolled() || open()">
+  <div class="container nav__inner">
+    <a routerLink="/" class="nav__brand" aria-label="Western Hardware Mart — home">
+      <img class="nav__mark" src="assets/brand/whm-mark-nav.png" alt="" width="52" height="45">
+      <span class="nav__word">
+        <span class="nav__name">{{ company.name }}</span>
+        <span class="nav__tag">{{ company.tagline }}</span>
+      </span>
+    </a>
+
+    <nav class="nav__links" aria-label="Main">
+      @for (l of links.slice(0, 3); track l.path) {
+        <a [routerLink]="l.path" routerLinkActive="is-active" ariaCurrentWhenActive="page">{{ l.label }}</a>
+      }
+    </nav>
+
+    <div class="nav__actions">
+      <a class="nav__phone" [href]="'tel:' + company.phoneE164" aria-label="Call {{ company.phoneDisplay }}">
+        <whm-icon name="phone" [size]="17" />
+        <span>{{ company.phoneDisplay }}</span>
+      </a>
+      <a routerLink="/get-a-quote" class="btn btn--primary btn--sm nav__cta">Get A Quote</a>
+      <button type="button" class="nav__toggle" (click)="setOpen(!open())" [attr.aria-expanded]="open()"
+              aria-controls="mobile-menu" [attr.aria-label]="open() ? 'Close menu' : 'Open menu'">
+        <span class="burger" [class.burger--x]="open()"><i></i><i></i><i></i></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="drawer" id="mobile-menu" [class.drawer--open]="open()" [attr.aria-hidden]="!open()" [attr.inert]="open() ? null : ''">
+  <button type="button" class="drawer__scrim" tabindex="-1" aria-label="Close menu" (click)="setOpen(false)"></button>
+  <nav class="drawer__panel" aria-label="Mobile">
+    <ul>
+      @for (l of links; track l.path; let i = $index) {
+        <li [style.--i]="i">
+          <a [routerLink]="l.path" routerLinkActive="is-active" ariaCurrentWhenActive="page">
+            {{ l.label }} <whm-icon name="chevron-right" [size]="18" />
+          </a>
+        </li>
+      }
+    </ul>
+    <div class="drawer__foot">
+      <a routerLink="/get-a-quote" class="btn btn--primary btn--block">Get A Quote</a>
+      <a class="btn btn--ghost btn--block" [href]="'tel:' + company.phoneE164">
+        <whm-icon name="phone" [size]="18" /> {{ company.phoneDisplay }}
+      </a>
+      <p class="drawer__hours">Mon–Fri 10–6 · Sat 10–5 · Sun closed</p>
+    </div>
+  </nav>
+</div>

@@ -1,0 +1,119 @@
+<section class="hero-band bg-grid">
+  <div class="container">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a routerLink="/">Home</a><whm-icon name="chevron-right" [size]="14" />
+      @if (lockedCategory()) {
+        <a routerLink="/categories">Categories</a><whm-icon name="chevron-right" [size]="14" />
+        <span aria-current="page">{{ categoryInfo()?.name ?? 'Not found' }}</span>
+      } @else {
+        <span aria-current="page">Products</span>
+      }
+    </nav>
+
+    @if (lockedCategory() && !categoryInfo()) {
+      <h1>Category not found</h1>
+      <p class="lead">This category doesn’t exist. Browse all categories or search the full catalogue instead.</p>
+      <div class="hero-band__actions"><a routerLink="/categories" class="btn btn--primary">View all categories</a></div>
+    } @else {
+      <div class="hero-band__row">
+        <div class="hero-band__text">
+          @if (categoryInfo(); as c) {
+            <span class="hero-band__icon"><whm-icon [name]="c.icon" [size]="22" /></span>
+            <h1>{{ c.name }}</h1>
+            <p class="lead">{{ c.description }}</p>
+          } @else {
+            <h1>Product catalogue</h1>
+            <p class="lead">Hydraulic valves, couplings and fittings, process instruments, hand tools and lifting equipment. Search, filter, then enquire on any product.</p>
+          }
+        </div>
+        <p class="hero-band__count">
+          @if (catalog.loaded()) { <strong>{{ total() }}</strong> {{ total() === 1 ? 'product' : 'products' }} } @else { Loading… }
+        </p>
+      </div>
+      <div class="hero-band__search">
+        <whm-search-bar [value]="query()" (valueChange)="onQuery($event)"
+          [placeholder]="categoryInfo() ? 'Search in ' + categoryInfo()!.name : 'Search by product name, model code or category'" />
+      </div>
+    }
+  </div>
+</section>
+
+@if (!lockedCategory() || categoryInfo()) {
+<section class="catalog surface-mist">
+  <div class="container catalog__layout">
+    <aside class="catalog__side" aria-label="Filters">
+      <div class="side-card">
+        <whm-product-filters uid="desk" [lockCategory]="!!lockedCategory()" [groups]="groups" [categories]="categoryFacets()"
+          [types]="typeFacets()" [brands]="brandFacets()" [category]="category()" [type]="type()" [brandSel]="brands()"
+          (categoryChange)="setCategory($event)" (typeChange)="setType($event)" (brandsChange)="setBrands($event)" />
+      </div>
+    </aside>
+
+    <div class="catalog__main">
+      <div class="toolbar" #resultsTop>
+        <button type="button" class="btn btn--ghost btn--sm toolbar__filters" (click)="openSheet(true)" aria-controls="filter-sheet" [attr.aria-expanded]="sheetOpen()">
+          <whm-icon name="sliders" [size]="17" /> Filters
+          @if (activeChips().length) { <span class="badge">{{ activeChips().length }}</span> }
+        </button>
+        <p class="toolbar__count" aria-live="polite">
+          @if (catalog.loaded()) { Showing <strong>{{ rangeLabel() }}</strong> of <strong>{{ total() }}</strong> }
+        </p>
+        <label class="toolbar__sort">
+          <span>Sort</span>
+          <select class="select" [value]="sort()" (change)="setSort($any($event.target).value)">
+            @for (o of sortOptions; track o.key) { <option [value]="o.key" [selected]="o.key === sort()">{{ o.label }}</option> }
+          </select>
+        </label>
+      </div>
+
+      @if (activeChips().length) {
+        <div class="chips" aria-label="Active filters">
+          @for (c of activeChips(); track c.kind + c.value) {
+            <button type="button" class="fchip" (click)="removeChip(c)" [attr.aria-label]="'Remove filter ' + c.label">
+              {{ c.label }} <whm-icon name="x" [size]="14" />
+            </button>
+          }
+          <button type="button" class="fchip fchip--clear" (click)="clearAll()">Clear all</button>
+        </div>
+      }
+
+      @if (!catalog.loaded()) {
+        <div class="skeleton-grid" aria-hidden="true">@for (i of [1,2,3,4,5,6]; track i) { <div class="sk"></div> }</div>
+      } @else if (total() === 0) {
+        <div class="empty">
+          <span class="empty__icon"><whm-icon name="package-search" [size]="34" /></span>
+          <h2>No products found</h2>
+          <p>Nothing matches your search and filters. Try a shorter search, check the spelling of a model code, or clear the filters.</p>
+          <div class="empty__actions">
+            <button type="button" class="btn btn--primary" (click)="clearAll()"><whm-icon name="rotate-ccw" [size]="17" /> Clear search & filters</button>
+            <whm-whatsapp-button label="Ask us on WhatsApp" [message]="'Hello Western Hardware Mart,\n\nI am looking for: ' + query() + '\n\nPlease let me know if you can supply it.\n\nThank you.'" />
+          </div>
+        </div>
+      } @else {
+        <whm-product-grid [products]="pageItems()" [eagerCount]="currentPage() === 1 ? 4 : 0" [animKey]="animKey()" label="Product results" />
+        <whm-pagination [page]="currentPage()" [pages]="pages()" (pageChange)="setPage($event)" />
+      }
+    </div>
+  </div>
+</section>
+}
+
+<!-- mobile filter bottom sheet -->
+<div class="sheet" id="filter-sheet" [class.sheet--open]="sheetOpen()" [attr.aria-hidden]="!sheetOpen()" [attr.inert]="sheetOpen() ? null : ''">
+  <button type="button" class="sheet__scrim" tabindex="-1" aria-label="Close filters" (click)="openSheet(false)"></button>
+  <div class="sheet__panel" role="dialog" aria-modal="true" aria-labelledby="sheet-title">
+    <div class="sheet__head">
+      <h2 id="sheet-title">Filters</h2>
+      <button type="button" class="sheet__close" (click)="openSheet(false)" aria-label="Close filters"><whm-icon name="x" [size]="20" /></button>
+    </div>
+    <div class="sheet__body">
+      <whm-product-filters uid="mob" [lockCategory]="!!lockedCategory()" [groups]="groups" [categories]="categoryFacets()"
+        [types]="typeFacets()" [brands]="brandFacets()" [category]="category()" [type]="type()" [brandSel]="brands()"
+        (categoryChange)="setCategory($event)" (typeChange)="setType($event)" (brandsChange)="setBrands($event)" />
+    </div>
+    <div class="sheet__foot">
+      <button type="button" class="btn btn--ghost" (click)="clearAll()">Clear all</button>
+      <button type="button" class="btn btn--primary" (click)="openSheet(false)">Show {{ total() }} {{ total() === 1 ? 'product' : 'products' }}</button>
+    </div>
+  </div>
+</div>

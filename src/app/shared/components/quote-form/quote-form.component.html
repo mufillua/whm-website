@@ -1,0 +1,51 @@
+<form class="qf" [formGroup]="form" (ngSubmit)="sendEmail()" novalidate>
+  <div class="qf__grid">
+    <div class="field" [class.field--error]="invalid('name')">
+      <label for="qf-name">Name <span aria-hidden="true">*</span></label>
+      <input id="qf-name" class="input" formControlName="name" autocomplete="name" [attr.aria-invalid]="invalid('name')" aria-describedby="qf-name-err">
+      @if (invalid('name')) { <span class="field-error" id="qf-name-err">Enter your name.</span> }
+    </div>
+    <div class="field">
+      <label for="qf-company">Company</label>
+      <input id="qf-company" class="input" formControlName="company" autocomplete="organization">
+    </div>
+    <div class="field" [class.field--error]="invalid('phone') || (tried() && form.hasError('contact'))">
+      <label for="qf-phone">Phone</label>
+      <input id="qf-phone" class="input" type="tel" formControlName="phone" autocomplete="tel" inputmode="tel" placeholder="+91">
+      @if (invalid('phone')) { <span class="field-error">Enter a valid phone number.</span> }
+    </div>
+    <div class="field" [class.field--error]="invalid('email') || (tried() && form.hasError('contact'))">
+      <label for="qf-email">Email</label>
+      <input id="qf-email" class="input" type="email" formControlName="email" autocomplete="email">
+      @if (invalid('email')) { <span class="field-error">Enter a valid email address.</span> }
+    </div>
+    @if (tried() && form.hasError('contact')) {
+      <p class="field-error qf__wide" role="alert">Add a phone number or email so we can reply.</p>
+    }
+    <div class="field qf__wide" [class.field--error]="invalid('requirement')">
+      <label for="qf-req">Product / requirement <span aria-hidden="true">*</span></label>
+      <input id="qf-req" class="input" formControlName="requirement" placeholder="e.g. KHB2 ball valve 1/2&quot; BSP, or pressure gauge 0–400 bar">
+      @if (invalid('requirement')) { <span class="field-error">Tell us which product or what you need.</span> }
+    </div>
+    <div class="field">
+      <label for="qf-qty">Quantity</label>
+      <input id="qf-qty" class="input" formControlName="quantity" placeholder="e.g. 10 nos">
+    </div>
+    <div class="field qf__wide">
+      <label for="qf-msg">Message</label>
+      <textarea id="qf-msg" class="textarea" formControlName="message" rows="4" placeholder="Sizes, pressure rating, material, delivery location…"></textarea>
+    </div>
+  </div>
+
+  <div class="qf__actions">
+    <button type="submit" class="btn btn--primary"><whm-icon name="send" [size]="18" /> Send Enquiry</button>
+    <button type="button" class="btn btn--whatsapp" (click)="sendWhatsapp()"><whm-icon name="message-circle" [size]="18" /> Send on WhatsApp</button>
+  </div>
+  <p class="qf__note">
+    @switch (sent()) {
+      @case ('email') { <span role="status"><whm-icon name="check" [size]="16" /> Your email app has opened with the enquiry filled in — press send there to finish.</span> }
+      @case ('whatsapp') { <span role="status"><whm-icon name="check" [size]="16" /> WhatsApp has opened with your enquiry — press send there to finish.</span> }
+      @default { Send Enquiry opens your email app with these details filled in. Fields marked * are required. }
+    }
+  </p>
+</form>

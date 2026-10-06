@@ -1,0 +1,212 @@
+<!-- HERO -->
+<section class="hero" aria-labelledby="hero-title">
+  <div class="hero__bg" aria-hidden="true">
+    <div class="hero__grid"></div>
+    <div class="blob blob--a"></div><div class="blob blob--b"></div>
+  </div>
+  <div class="container hero__inner">
+    <div class="hero__copy">
+      <span class="hero__badge"><whm-icon name="badge-check" [size]="15" /> INDUSTRIAL SUPPLY</span>
+      <h1 id="hero-title">Hydraulic, Flow Control & Process Instrumentation Solutions</h1>
+      <p class="hero__lead">
+        {{ company.name }} supplies and stocks hydraulic valves, couplings, tube fittings and process instruments —
+        plus hand tools and lifting equipment — for plants, workshops and maintenance teams.
+      </p>
+      <div class="hero__actions">
+        <a routerLink="/products" class="btn btn--primary">Explore Products <whm-icon name="arrow-right" [size]="18" /></a>
+        <whm-whatsapp-button />
+      </div>
+      <!-- <div class="hero__search">
+        <whm-search-bar id="hero-search" label="Search the catalogue" placeholder="Try “KHB2”, “pressure gauge” or “shackle”" [showButton]="true" (submitted)="search($event)" />
+      </div> -->
+      <ul class="hero__facts">
+        <li><strong>{{ productCount() || '600+' }}</strong> catalogue products</li>
+        <li><strong>{{ catalog.categories.length }}</strong> categories</li>
+        <li><whm-icon name="map-pin" [size]="15" /> Netaji Subhas Road, Kolkata</li>
+      </ul>
+    </div>
+
+    <div class="hero__visual" aria-label="Featured product ranges">
+      <svg class="hero__lines" viewBox="0 0 520 520" aria-hidden="true">
+        <circle cx="260" cy="260" r="190" class="ln ln--ring" />
+        <circle cx="260" cy="260" r="122" class="ln ln--ring2" />
+        <path d="M260 40 V480 M40 260 H480" class="ln ln--axis" />
+        <path d="M128 128 L392 392 M392 128 L128 392" class="ln ln--diag" />
+      </svg>
+      @for (h of heroItems; track h.code; let i = $index) {
+        <a class="tag tag--{{ i }}" [routerLink]="['/products', h.slug]" [style.--i]="i">
+          <span class="tag__img"><img [src]="h.img" [alt]="h.label" width="160" height="160" [attr.fetchpriority]="i < 2 ? 'high' : null"></span>
+          <span class="tag__meta"><span class="tag__label">{{ h.label }}</span><span class="nameplate"><span>{{ h.code }}</span></span></span>
+        </a>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCT CAROUSEL -->
+<section class="section carousel-sec surface-plate" aria-labelledby="car-title">
+  <div class="container">
+    <div class="section-head" whmReveal>
+      <div class="section-head__text">
+        <span class="kicker">Product highlights</span>
+        <h2 id="car-title">From our ranges</h2>
+        <p>Swipe or use the arrows — featuring the 40 ft marine container, supplied directly by {{ company.name }}.</p>
+      </div>
+      <a routerLink="/products" class="link-arrow">View all products <whm-icon name="arrow-right" [size]="18" /></a>
+    </div>
+    @if (carousel().length) {
+      <whm-product-carousel [products]="carousel()" [featuredId]="featuredId" label="Product highlights" />
+    } @else {
+      <div class="feat-sk" aria-hidden="true">@for (i of [1,2,3,4]; track i) { <div></div> }</div>
+    }
+  </div>
+</section>
+
+<!-- CATEGORIES -->
+<section class="section surface-lavender bg-dots" aria-labelledby="cat-title">
+  <div class="container">
+    <div class="section-head" whmReveal>
+      <div class="section-head__text">
+        <span class="kicker">Product categories</span>
+        <h2 id="cat-title">Find products by category</h2>
+        <p>{{ catalog.categories.length }} categories across hydraulics, instrumentation, hand tools and lifting.</p>
+      </div>
+      <div class="tabs" role="group" aria-label="Filter categories">
+        <button type="button" class="tab" [class.is-on]="group() === 'all'" [attr.aria-pressed]="group() === 'all'" (click)="group.set('all')">All</button>
+        @for (g of groups; track g.id) {
+          <button type="button" class="tab" [class.is-on]="group() === g.id" [attr.aria-pressed]="group() === g.id" (click)="group.set(g.id)">{{ g.name }}</button>
+        }
+      </div>
+    </div>
+    <ul class="cat-grid">
+      @for (c of visibleCategories(); track c.slug; let i = $index) {
+        <li [style.--d]="i"><whm-category-card [category]="c" [compact]="true" [count]="catalog.categoryCounts().get(c.slug) ?? 0" [image]="catalog.categoryImages().get(c.slug)" /></li>
+      }
+    </ul>
+    <div class="center"><a routerLink="/categories" class="btn btn--ghost">View all categories</a></div>
+  </div>
+</section>
+
+<!-- FEATURED -->
+<section class="section surface-mist bg-grid" aria-labelledby="feat-title">
+  <div class="container">
+    <div class="section-head" whmReveal>
+      <div class="section-head__text">
+        <span class="kicker">Featured products</span>
+        <h2 id="feat-title">Popular across our ranges</h2>
+        <p>A cross-section of the catalogue. Open any product for specifications and to enquire.</p>
+      </div>
+      <a routerLink="/products" class="link-arrow">Browse the full catalogue <whm-icon name="arrow-right" [size]="18" /></a>
+    </div>
+    @if (featured().length) {
+      <whm-product-grid [products]="featured()" label="Featured products" [wide]="true" />
+    } @else {
+      <div class="feat-sk" aria-hidden="true">@for (i of [1,2,3,4]; track i) { <div></div> }</div>
+    }
+  </div>
+</section>
+
+<!-- WHY -->
+<section class="section why" aria-labelledby="why-title">
+  <div class="container why__inner">
+    <div class="why__intro" whmReveal>
+      <span class="kicker">Why {{ company.name }}</span>
+      <h2 id="why-title">A dependable counter for industrial parts</h2>
+      <p>We focus on supply: stocking proven ranges, helping you identify the right part, and replying quickly.</p>
+      <a routerLink="/about" class="link-arrow">About us <whm-icon name="arrow-right" [size]="18" /></a>
+    </div>
+    <ul class="why__list">
+      @for (r of reasons; track r.title; let i = $index) {
+        <li [whmReveal]="i * 60">
+          <span class="why__icon"><whm-icon [name]="r.icon" [size]="22" /></span>
+          <h3>{{ r.title }}</h3>
+          <p>{{ r.text }}</p>
+        </li>
+      }
+    </ul>
+  </div>
+</section>
+
+<!-- APPLICATIONS -->
+<section class="section apps surface-sky" aria-labelledby="apps-title">
+  <div class="container">
+    <div class="section-head" whmReveal>
+      <div class="section-head__text">
+        <span class="kicker">Applications</span>
+        <h2 id="apps-title">Where our products are used</h2>
+        <p>Applications listed by the manufacturers of the ranges we supply.</p>
+      </div>
+    </div>
+    <ul class="apps__grid">
+      @for (a of applications; track a.title; let i = $index) {
+        <li [whmReveal]="(i % 4) * 50">
+          <whm-icon [name]="a.icon" [size]="26" [stroke]="1.5" />
+          <div><h3>{{ a.title }}</h3><p>{{ a.text }}</p></div>
+        </li>
+      }
+    </ul>
+  </div>
+</section>
+
+<!-- ABOUT PREVIEW -->
+<section class="section about surface-plate" aria-labelledby="about-title">
+  <div class="container about__inner">
+    <div class="about__visual" whmReveal aria-hidden="true">
+      <div class="about__plate">
+        <img src="assets/logo.png" alt="" width="120" height="110" loading="lazy">
+      </div>
+      <div class="about__mosaic">
+        <span><img src="assets/products/delta/mr.jpg" alt="" loading="lazy"></span>
+        <span><img src="assets/products/marine-container.png" alt="" loading="lazy"></span>
+        <span><img src="assets/products/lifting/screw-pin-bow-shackle.jpg" alt="" loading="lazy"></span>
+        <span><img src="assets/products/taparia/t9-a-1.jpg" alt="" loading="lazy"></span>
+      </div>
+      <div class="about__addr">
+        <whm-icon name="map-pin" [size]="18" />
+        <div><strong>Shop No. 8, Basundra Tower</strong><span>22, Netaji Subhas Road, Kolkata 700001</span></div>
+      </div>
+    </div>
+    <div class="about__copy" whmReveal="80">
+      <span class="kicker">About us</span>
+      <h2 id="about-title">A Kolkata supplier for hydraulic and process products</h2>
+      <p>{{ company.name }} is run by partners {{ company.partners.join(' and ') }}. From our shop on Netaji Subhas Road we supply
+        and stock hydraulic valves, couplings and tube fittings, process instrumentation, hand tools and lifting equipment
+        from established manufacturers.</p>
+      <p>Tell us the part you need — a model code, a size, or a photo of the old one — and we will help you find the right match.</p>
+      <div class="about__actions">
+        <a routerLink="/about" class="btn btn--primary">More about us</a>
+        <a routerLink="/contact" class="btn btn--ghost">Visit the shop</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BRANDS -->
+<section class="brands surface-mist" aria-labelledby="brands-title">
+  <div class="container brands__inner">
+    <h2 id="brands-title" class="brands__title">Our Brands</h2>
+    <ul class="brands__list">
+      @for (b of catalog.brands; track b.slug) {
+        <li>
+          <a [routerLink]="['/products']" [queryParams]="{ brand: b.slug }" [attr.aria-label]="'View ' + b.name + ' products'">
+            @if (b.logo) { <img [src]="b.logo" [alt]="b.name" loading="lazy" decoding="async"> } @else { <span>{{ b.name }}</span> }
+          </a>
+        </li>
+      }
+    </ul>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta" aria-labelledby="cta-title">
+  <div class="container cta__inner">
+    <div class="cta__text">
+      <h2 id="cta-title">Looking for a specific valve, coupling, fitting or instrumentation product?</h2>
+      <p>Tell us what you need and our team will help you find the right product.</p>
+    </div>
+    <div class="cta__actions">
+      <whm-whatsapp-button label="WhatsApp Us" />
+      <whm-email-button label="Send an Email" variant="btn btn--light" subject="Product enquiry" />
+    </div>
+  </div>
+</section>

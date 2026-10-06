@@ -1,0 +1,12 @@
+:host { display: block; }
+.qf__grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-5) var(--s-5); }
+.qf__wide { grid-column: 1 / -1; }
+.field label span { color: var(--c-indigo); }
+.qf__actions { display: flex; flex-wrap: wrap; gap: var(--s-3); margin-top: var(--s-6); }
+.qf__note { margin-top: var(--s-4); font-size: var(--fs-sm); color: var(--c-muted);
+  span { display: inline-flex; gap: 8px; align-items: flex-start; color: var(--c-primary-deep); font-weight: 600; }
+}
+@media (max-width: 640px) {
+  .qf__grid { grid-template-columns: 1fr; }
+  .qf__actions .btn { flex: 1 1 100%; }
+}

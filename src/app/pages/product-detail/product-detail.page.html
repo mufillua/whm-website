@@ -1,0 +1,124 @@
+@if (!catalog.loaded()) {
+  <section class="pd surface-sky"><div class="container pd__grid" aria-busy="true">
+    <div class="sk sk--img"></div><div class="sk-col"><div class="sk sk--line"></div><div class="sk sk--title"></div><div class="sk sk--line"></div><div class="sk sk--block"></div></div>
+  </div></section>
+} @else if (product(); as p) {
+  <section class="pd surface-sky bg-grid">
+    <div class="container">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a routerLink="/">Home</a><whm-icon name="chevron-right" [size]="14" />
+        <a routerLink="/products">Products</a><whm-icon name="chevron-right" [size]="14" />
+        @if (category(); as c) { <a [routerLink]="['/categories', c.slug]">{{ c.name }}</a><whm-icon name="chevron-right" [size]="14" /> }
+        <span aria-current="page">{{ p.name }}</span>
+      </nav>
+
+      <div class="pd__grid">
+        <div class="pd__media">
+          <whm-product-gallery [images]="p.images ?? []" [alt]="p.name" [icon]="category()?.icon ?? 'package'" />
+        </div>
+
+        <div class="pd__info">
+          <div class="pd__tags">
+            @if (category(); as c) { <a class="chip" [routerLink]="['/categories', c.slug]"><whm-icon [name]="c.icon" [size]="14" />{{ c.name }}</a> }
+            @if (type(); as t) { <a class="chip chip--indigo" [routerLink]="['/categories', t.categorySlug]" [queryParams]="{ type: t.slug }">{{ t.name }}</a> }
+          </div>
+          <h1 class="pd__title">{{ p.name }}</h1>
+
+          <dl class="pd__meta">
+            @if (p.modelCode) { <div><dt>Model / code</dt><dd><span class="nameplate"><span>{{ p.modelCode }}</span></span></dd></div> }
+            @if (brand(); as b) { <div><dt>Brand</dt><dd>{{ b.name }}</dd></div> }
+            @if (category(); as c) { <div><dt>Category</dt><dd>{{ c.name }}</dd></div> }
+          </dl>
+
+          @if (p.shortDescription) { <p class="pd__desc">{{ p.shortDescription }}</p> }
+
+          @if (keySpecs().length) {
+            <ul class="pd__keys">
+              @for (s of keySpecs(); track s.label + s.value) { <li><span>{{ s.label }}</span><strong>{{ s.value }}</strong></li> }
+            </ul>
+          }
+
+          <div class="pd__enquire" id="enquire">
+            <h2 class="pd__enquire-h">Enquire about this product</h2>
+            <p>Send us the product details and we’ll reply with availability and pricing.</p>
+            <div class="pd__btns">
+              <whm-whatsapp-button [product]="{ name: p.name, modelCode: p.modelCode }" />
+              <whm-email-button [product]="enquiry()" />
+            </div>
+            <div class="pd__alt">
+              <a [href]="'tel:' + company.phoneE164"><whm-icon name="phone" [size]="16" /> {{ company.phoneDisplay }}</a>
+              <a routerLink="/get-a-quote" [queryParams]="quoteParams()"><whm-icon name="send" [size]="16" /> Request a formal quote</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  @if (p.specifications?.length || p.features?.length || p.variants?.length) {
+    <section class="specs surface-plate">
+      <div class="container specs__grid">
+        <div class="specs__main">
+          @if (p.specifications?.length) {
+            <h2 class="specs__h">Specifications</h2>
+            <dl class="spec-table">
+              @for (s of p.specifications; track $index) { <div><dt>{{ s.label }}</dt><dd>{{ s.value }}</dd></div> }
+            </dl>
+          }
+          @if (p.variants?.length) {
+            <h2 class="specs__h">Sizes & variants</h2>
+            @for (v of p.variants; track $index) {
+              @if (v.title) { <h3 class="specs__sub">{{ v.title }}</h3> }
+              <div class="vt-wrap" tabindex="0" role="region" [attr.aria-label]="(v.title ?? 'Variants') + ' table'">
+                <table class="vt">
+                  <thead><tr>@for (c of v.columns; track $index) { <th scope="col">{{ c }}</th> }</tr></thead>
+                  <tbody>
+                    @for (r of v.rows; track $index) { <tr>@for (cell of r; track $index) { <td>{{ cell }}</td> }</tr> }
+                  </tbody>
+                </table>
+              </div>
+            }
+            <p class="specs__note">Need a size that isn’t listed? Ask us — other configurations may be available on request.</p>
+          }
+        </div>
+        @if (p.features?.length) {
+          <aside class="specs__side">
+            <h2 class="specs__h">Features</h2>
+            <ul class="feat">
+              @for (f of p.features; track $index) { <li><whm-icon name="check" [size]="16" [stroke]="2.5" />{{ f }}</li> }
+            </ul>
+          </aside>
+        }
+      </div>
+    </section>
+  }
+
+  @if (related().length) {
+    <section class="section surface-lavender bg-dots">
+      <div class="container">
+        <div class="section-head">
+          <div class="section-head__text"><h2>Related products</h2></div>
+          @if (category(); as c) { <a class="link-arrow" [routerLink]="['/categories', c.slug]">All {{ c.name }} <whm-icon name="arrow-right" [size]="18" /></a> }
+        </div>
+        <whm-product-grid [products]="related()" label="Related products" />
+      </div>
+    </section>
+  }
+
+  <div class="mbar" aria-label="Quick enquiry">
+    <whm-whatsapp-button [product]="{ name: p.name, modelCode: p.modelCode }" label="WhatsApp" [block]="true" />
+    <whm-email-button [product]="enquiry()" label="Email" [block]="true" />
+  </div>
+} @else {
+  <section class="section surface-sky bg-grid nf">
+    <div class="container container--narrow">
+      <span class="nf__icon"><whm-icon name="package-search" [size]="34" /></span>
+      <h1>Product not found</h1>
+      <p>We couldn’t find this product. It may have been renamed — search the catalogue or ask us directly.</p>
+      <div class="nf__actions">
+        <a routerLink="/products" class="btn btn--primary">Browse all products</a>
+        <whm-whatsapp-button label="Ask on WhatsApp" />
+      </div>
+    </div>
+  </section>
+}

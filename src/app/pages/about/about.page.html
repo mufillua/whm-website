@@ -1,0 +1,104 @@
+<section class="ab-hero bg-grid">
+  <div class="container ab-hero__inner">
+    <div class="ab-hero__text">
+      <nav class="crumbs" aria-label="Breadcrumb"><a routerLink="/">Home</a><whm-icon name="chevron-right" [size]="14" /><span aria-current="page">About Us</span></nav>
+      <h1>About {{ company.name }}</h1>
+      <p class="lead">We are a supplier and stockist of industrial products in Kolkata — hydraulic valves, couplings and tube fittings,
+        process instrumentation, hand tools and lifting equipment, sourced from established manufacturers.</p>
+    </div>
+    <dl class="ab-facts">
+      <div><dt>Partners</dt><dd>{{ company.partners.join(' & ') }}</dd></div>
+      <div><dt>Location</dt><dd>Netaji Subhas Road, Kolkata, West Bengal</dd></div>
+      <div><dt>What we do</dt><dd>Supply & stocking</dd></div>
+    </dl>
+  </div>
+</section>
+
+<section class="section surface-plate">
+  <div class="container intro">
+    <div class="intro__copy" whmReveal>
+      <span class="kicker">Who we are</span>
+      <h2>A practical source for industrial parts</h2>
+      <p>{{ company.name }} serves plants, workshops and maintenance teams who need dependable hydraulic and process
+        components without chasing several suppliers. Our counter is at Shop No. 8, Basundra Tower, 22 Netaji Subhas Road —
+        in the heart of Kolkata’s hardware and industrial supply district.</p>
+      <p>Our role is supply: we stock and source products from manufacturers such as Yuken, Polyhydron, Hydroline, Delta,
+        Asian Hydraulic and Taparia, and help customers identify the right part for the job.</p>
+    </div>
+    <ul class="intro__ranges">
+      @for (g of groups; track g.id; let i = $index) {
+        <li [whmReveal]="i * 70">
+          <span class="ri"><whm-icon [name]="groupIcons[g.id]" [size]="22" /></span>
+          <div>
+            <h3>{{ g.name }}</h3>
+            <p>{{ catsIn(g.id).length }} categories · {{ countIn(g.id) }} products</p>
+          </div>
+        </li>
+      }
+    </ul>
+  </div>
+</section>
+
+<section class="section surface-lavender bg-dots" aria-labelledby="how-h">
+  <div class="container">
+    <div class="section-head" whmReveal>
+      <div class="section-head__text">
+        <span class="kicker">Customer support</span>
+        <h2 id="how-h">How an enquiry works</h2>
+        <p>From first message to collection, in four steps.</p>
+      </div>
+    </div>
+    <ol class="steps">
+      @for (s of steps; track s.title; let i = $index) {
+        <li [whmReveal]="i * 80">
+          <span class="steps__n">{{ i + 1 }}</span>
+          <h3>{{ s.title }}</h3>
+          <p>{{ s.text }}</p>
+        </li>
+      }
+    </ol>
+  </div>
+</section>
+
+<section class="section surface-mist" aria-labelledby="range-h">
+  <div class="container range">
+    <div class="range__copy" whmReveal>
+      <span class="kicker">Product range & sourcing</span>
+      <h2 id="range-h">What we supply</h2>
+      <p>Each range comes from the manufacturer’s own catalogue, so specifications on this site follow their published data.
+        Where a manufacturer publishes no datasheet, we say so rather than guess.</p>
+      <a routerLink="/categories" class="btn btn--primary">Browse categories</a>
+    </div>
+    <div class="range__cols">
+      @for (g of groups; track g.id) {
+        <div class="range__col" whmReveal>
+          <h3>{{ g.name }}</h3>
+          <ul>@for (c of catsIn(g.id); track c.slug) { <li><a [routerLink]="['/categories', c.slug]">{{ c.name }}</a></li> }</ul>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<section class="section surface-sky" aria-labelledby="ind-h">
+  <div class="container">
+    <div class="section-head" whmReveal>
+      <div class="section-head__text">
+        <span class="kicker">Industries & applications</span>
+        <h2 id="ind-h">Who we work with</h2>
+        <p>Applications named by the manufacturers of the ranges we supply.</p>
+      </div>
+    </div>
+    <ul class="sectors">@for (s of sectors; track s) { <li><whm-icon name="check" [size]="16" [stroke]="2.5" />{{ s }}</li> }</ul>
+  </div>
+</section>
+
+<section class="ab-cta">
+  <div class="container ab-cta__inner">
+    <div><h2>Visit us or send an enquiry</h2><p>{{ company.address.lines.join(', ') }}</p></div>
+    <div class="ab-cta__actions">
+      <a routerLink="/contact" class="btn btn--light">Contact details</a>
+      <whm-whatsapp-button label="WhatsApp Us" />
+    </div>
+  </div>
+</section>

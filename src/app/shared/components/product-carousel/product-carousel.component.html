@@ -1,0 +1,47 @@
+<div class="car" role="region" aria-roledescription="carousel" [attr.aria-label]="label()">
+  <div class="car__track" #track (scroll)="onScroll()" tabindex="0" aria-live="off">
+    @for (s of slides(); track s.p.id; let i = $index) {
+      <article class="slide" [class.slide--featured]="s.p.id === featuredId()" role="group" aria-roledescription="slide"
+               [attr.aria-label]="(i + 1) + ' of ' + slides().length + ': ' + s.p.name">
+        <div class="slide__stage">
+          <whm-product-image [src]="s.p.images?.[0]" [alt]="s.p.name" [icon]="s.category?.icon ?? 'package'" [eager]="i < 3" [placeholderSize]="48" />
+          @if (s.p.id === featuredId()) { <span class="slide__flag"><whm-icon name="badge-check" [size]="14" /> Featured</span> }
+          @else if (s.brand; as b) { <span class="slide__brand">{{ b.name }}</span> }
+        </div>
+        <div class="slide__body">
+          <p class="slide__cat">{{ s.type?.name ?? s.category?.name }}</p>
+          <h3 class="slide__name"><a [routerLink]="['/products', s.p.slug]" class="slide__link">{{ s.p.name }}</a></h3>
+          @if (s.p.modelCode) { <span class="nameplate"><span>{{ s.p.modelCode }}</span></span> }
+          @if (s.p.id === featuredId() && s.p.shortDescription) { <p class="slide__desc">{{ s.p.shortDescription }}</p> }
+          <div class="slide__foot">
+            <span class="slide__more">View details <whm-icon name="arrow-right" [size]="16" /></span>
+            <a class="slide__wa" [href]="s.wa" target="_blank" rel="noopener" [attr.aria-label]="'Enquire about ' + s.p.name + ' on WhatsApp'">
+              <whm-icon name="message-circle" [size]="17" />
+            </a>
+          </div>
+        </div>
+      </article>
+    }
+  </div>
+
+  <div class="car__controls">
+    <p class="car__count" aria-live="polite"><strong>{{ active() + 1 }}</strong> / {{ slides().length }}</p>
+    <div class="car__dots" role="group" aria-label="Choose slide">
+      @for (s of slides(); track s.p.id; let i = $index) {
+        <button type="button" class="dot" [class.is-on]="i === active()" [attr.aria-label]="'Go to slide ' + (i + 1)"
+                [attr.aria-current]="i === active() ? 'true' : null" (click)="goTo(i)"></button>
+      }
+    </div>
+    <div class="car__btns">
+      <button type="button" class="cbtn" (click)="toggle()" [attr.aria-label]="playing() ? 'Pause automatic scrolling' : 'Start automatic scrolling'">
+        @if (playing()) {
+          <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1" fill="currentColor"/><rect x="14" y="5" width="4" height="14" rx="1" fill="currentColor"/></svg>
+        } @else {
+          <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5v14l12-7z" fill="currentColor"/></svg>
+        }
+      </button>
+      <button type="button" class="cbtn" (click)="step(-1)" [disabled]="atStart()" aria-label="Previous products"><whm-icon name="chevron-left" [size]="20" /></button>
+      <button type="button" class="cbtn" (click)="step(1)" [disabled]="atEnd()" aria-label="Next products"><whm-icon name="chevron-right" [size]="20" /></button>
+    </div>
+  </div>
+</div>
