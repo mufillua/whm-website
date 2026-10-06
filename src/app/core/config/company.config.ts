@@ -18,12 +18,22 @@ export const COMPANY = {
     { days: 'Saturday', time: '10:00 AM – 5:00 PM' },
     { days: 'Sunday', time: 'Closed' },
   ],
+
   /** Map search for the street address — no invented coordinates. */
   mapsUrl:
     'https://www.google.com/maps/search/?api=1&query=' +
     encodeURIComponent('Basundra Tower, 22 Netaji Subhas Road, Kolkata 700001'),
   /** Placeholder until the live domain is confirmed. */
   siteUrl: 'https://westernhardwaremart.com',
-  /** Add profile URLs here to show them in the footer. */
-  social: [] as { label: string; url: string }[],
+  /** Social media profiles shown in the footer. */
+  social: [
+    {
+      label: 'LinkedIn',
+      url: 'https://www.linkedin.com/company/westernhardwaremart/',
+    },
+    {
+      label: 'Instagram',
+      url: 'https://www.instagram.com/westernhardwaremart/',
+    },
+  ] as { label: string; url: string }[],
 } as const;
