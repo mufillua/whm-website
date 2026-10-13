@@ -1,7 +1,7 @@
 :host { display: block; }
 
 /* ---------------- HERO ---------------- */
-.hero { position: relative; isolation: isolate; overflow: hidden; padding: clamp(40px, 3vw, 80px) 0 clamp(56px, 7vw, 96px);
+.hero { position: relative; isolation: isolate; overflow: hidden; padding: clamp(40px, 6vw, 80px) 0 clamp(56px, 7vw, 96px);
   background: linear-gradient(135deg, #e7f2f8 0%, #f2f7fb 45%, #efeafa 100%); border-bottom: 1px solid var(--c-line); }
 .hero__bg { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
 .hero__grid { position: absolute; inset: 0;
@@ -147,7 +147,11 @@
 @media (max-width: 680px) { .cat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; } }
 @media (max-width: 960px) {
   .hero__inner { grid-template-columns: 1fr; }
-  .hero__visual { max-width: 460px; }
+  /* single column: the floating collage becomes a tidy 2×2 grid so the four cards can never collide */
+  .hero__visual { aspect-ratio: auto; max-width: 560px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; padding: 14px 0; }
+  .hero__lines { opacity: 0.6; }
+  .tag { position: relative; inset: auto; width: auto; min-width: 0; animation: tag-in 700ms var(--ease-out) both; animation-delay: calc(var(--i) * 100ms + 200ms); }
+  .tag__img img { inset: 10px; width: calc(100% - 20px); height: calc(100% - 20px); }
   .why__inner, .about__inner { grid-template-columns: 1fr; }
   .why__intro { position: static; }
   .about__visual { min-height: 0; }
@@ -156,7 +160,7 @@
   .why__list { grid-template-columns: 1fr; }
   .apps__grid { grid-template-columns: 1fr; }
   .hero__actions { width: 100%; > * { flex: 1 1 auto; } ::ng-deep .btn { flex: 1 1 auto; } }
-  .tag__meta { padding: 7px 9px; } .tag__label { font-size: 0.7rem; }
+  .tag__meta { flex-direction: column; align-items: flex-start; gap: 6px; padding: 9px 10px 10px; }
+  .tag__label { font-size: 0.78rem; max-width: 100%; }
   .cta__actions { width: 100%; ::ng-deep .btn { flex: 1 1 100%; } }
 }
-@media (max-width: 400px) { .tag .nameplate { display: none; } }
