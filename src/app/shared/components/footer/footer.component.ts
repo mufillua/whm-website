@@ -65,10 +65,10 @@ import { IconComponent } from '../icon/icon.component';
       <div class="footer__base">
         <div class="container footer__base-inner">
           <span>© {{ year }} {{ company.name }}. All rights reserved. Powered by <a
-          href="https://mufaddalmaimoon.vercel.app/"
+          href="https://maimoondigital.vercel.app/"
           target="_blank"
           rel="noopener noreferrer"
-        >Mufaddal Maimoon</a></span>
+        >Maimoon Digital</a></span>
         </div>
       </div>
     </footer>
