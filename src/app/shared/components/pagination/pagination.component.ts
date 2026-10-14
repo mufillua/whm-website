@@ -8,7 +8,7 @@ import { IconComponent } from '../icon/icon.component';
   template: `
     @if (pages() > 1) {
       <nav class="pg" aria-label="Pagination">
-        <button type="button" class="pg__btn pg__nav" [disabled]="page() <= 1" (click)="go(page() - 1)">
+        <button type="button" class="pg__btn pg__nav" [disabled]="page() <= 1" (click)="go(page() - 1)" aria-label="Previous page">
           <whm-icon name="chevron-left" [size]="18" /><span>Previous</span>
         </button>
         <ol class="pg__list">
@@ -22,7 +22,7 @@ import { IconComponent } from '../icon/icon.component';
             </li>
           }
         </ol>
-        <button type="button" class="pg__btn pg__nav" [disabled]="page() >= pages()" (click)="go(page() + 1)">
+        <button type="button" class="pg__btn pg__nav" [disabled]="page() >= pages()" (click)="go(page() + 1)" aria-label="Next page">
           <span>Next</span><whm-icon name="chevron-right" [size]="18" />
         </button>
       </nav>

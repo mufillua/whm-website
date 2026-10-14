@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core
 import { RouterLink } from '@angular/router';
 import { COMPANY } from '../../core/config/company.config';
 import { SeoService } from '../../core/services/seo.service';
+import { breadcrumbSchema } from '../../core/services/schema';
 import { EmailButtonComponent } from '../../shared/components/email-button/email-button.component';
 import { IconComponent } from '../../shared/components/icon/icon.component';
 import { QuoteFormComponent } from '../../shared/components/quote-form/quote-form.component';
@@ -63,6 +64,11 @@ export class QuotePage {
   readonly product = input<string>();
   readonly c = COMPANY;
   constructor() {
-    inject(SeoService).set({ title: 'Get A Quote', description: 'Request a quotation from Western Hardware Mart for hydraulic valves, couplings, fittings, instrumentation, tools and lifting equipment.', path: '/get-a-quote' });
+    inject(SeoService).set({
+      title: 'Get a Quote',
+      description: 'Request a quotation from Western Hardware Mart, Kolkata for hydraulic valves, couplings, fittings, pressure gauges, hand tools and lifting equipment — reply on WhatsApp or email.',
+      path: '/get-a-quote',
+      jsonLd: [breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Get a Quote', path: '/get-a-quote' }])],
+    });
   }
 }

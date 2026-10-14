@@ -4,15 +4,17 @@
 .hero { position: relative; isolation: isolate; overflow: hidden; padding: clamp(40px, 6vw, 80px) 0 clamp(56px, 7vw, 96px);
   background: linear-gradient(135deg, #e7f2f8 0%, #f2f7fb 45%, #efeafa 100%); border-bottom: 1px solid var(--c-line); }
 .hero__bg { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
-.hero__grid { position: absolute; inset: 0;
+.hero__grid { position: absolute; inset: 0; overflow: hidden;
+  mask-image: radial-gradient(ellipse 70% 80% at 70% 45%, #000 20%, transparent 80%); }
+/* The drift moves a GPU layer (transform) instead of repainting the background every frame. */
+.hero__grid::before { content: ''; position: absolute; inset: -120px 0 0 -120px; will-change: transform;
   background-image:
     linear-gradient(rgba(14, 102, 144, 0.09) 1px, transparent 1px), linear-gradient(90deg, rgba(14, 102, 144, 0.09) 1px, transparent 1px),
     linear-gradient(rgba(14, 102, 144, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(14, 102, 144, 0.04) 1px, transparent 1px);
   background-size: 120px 120px, 120px 120px, 24px 24px, 24px 24px;
-  mask-image: radial-gradient(ellipse 70% 80% at 70% 45%, #000 20%, transparent 80%);
   animation: grid-drift 40s linear infinite; }
-@keyframes grid-drift { to { background-position: 120px 120px, 120px 120px, 24px 24px, 24px 24px; } }
-.blob { position: absolute; border-radius: 50%; filter: blur(70px); opacity: 0.55; }
+@keyframes grid-drift { to { transform: translate(120px, 120px); } }
+.blob { position: absolute; border-radius: 50%; filter: blur(70px); opacity: 0.55; will-change: transform; }
 .blob--a { width: 520px; height: 520px; right: -120px; top: -160px; background: radial-gradient(circle, rgba(43, 141, 186, 0.45), transparent 70%); animation: blob 18s ease-in-out infinite alternate; }
 .blob--b { width: 460px; height: 460px; right: 22%; bottom: -220px; background: radial-gradient(circle, rgba(107, 87, 194, 0.38), transparent 70%); animation: blob 22s ease-in-out infinite alternate-reverse; }
 @keyframes blob { to { transform: translate(-40px, 30px) scale(1.08); } }
@@ -46,7 +48,7 @@
 @keyframes spin { to { transform: rotate(360deg); } }
 @keyframes draw { to { stroke-dashoffset: 0; } }
 .tag { position: absolute; width: 44%; display: grid; gap: 0; text-decoration: none; color: inherit; background: linear-gradient(170deg, rgba(248, 251, 253, 0.9), rgba(234, 242, 248, 0.88));
-  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid rgba(183, 202, 215, 0.8); border-radius: var(--r-md); box-shadow: var(--sh-3);
+  border: 1px solid rgba(183, 202, 215, 0.8); border-radius: var(--r-md); box-shadow: var(--sh-3);
   animation: tag-in 800ms var(--ease-out) both, float 7s ease-in-out infinite; animation-delay: calc(var(--i) * 120ms + 250ms), calc(var(--i) * -1.7s);
   transition: box-shadow var(--t-med), border-color var(--t-med); }
 .tag:hover { border-color: var(--c-primary); box-shadow: 0 26px 50px -24px rgba(11, 74, 107, 0.55); }

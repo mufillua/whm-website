@@ -1,7 +1,7 @@
 <div class="car" role="region" aria-roledescription="carousel" [attr.aria-label]="label()">
   <div class="car__track" #track (scroll)="onScroll()" tabindex="0" aria-live="off">
     @for (s of slides(); track s.p.id; let i = $index) {
-      <article class="slide" [class.slide--featured]="s.p.id === featuredId()" role="group" aria-roledescription="slide"
+      <div class="slide" [class.slide--featured]="s.p.id === featuredId()" role="group" aria-roledescription="slide"
                [attr.aria-label]="(i + 1) + ' of ' + slides().length + ': ' + s.p.name">
         <div class="slide__stage">
           <whm-product-image [src]="s.p.images?.[0]" [alt]="s.p.name" [icon]="s.category?.icon ?? 'package'" [eager]="i < 3" [placeholderSize]="48" />
@@ -20,7 +20,7 @@
             </a>
           </div>
         </div>
-      </article>
+      </div>
     }
   </div>
 

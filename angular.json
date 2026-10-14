@@ -55,7 +55,9 @@
               "node_modules/@fontsource-variable/archivo/wdth.css",
               "node_modules/@fontsource-variable/manrope/wght.css",
               "src/styles.scss"
-            ]
+            ],
+            "server": "src/main.server.ts",
+            "outputMode": "static"
           },
           "configurations": {
             "production": {

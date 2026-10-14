@@ -33,5 +33,5 @@ export class EmailButtonComponent {
     }
     return this.enquiry.mailtoUrl(this.subject() ?? `Enquiry for ${COMPANY.name}`, this.body() ?? `Hello ${COMPANY.name},\n\n`);
   });
-  readonly ariaLabel = computed(() => (this.product() ? `Email an enquiry about ${this.product()!.name}` : this.label()));
+  readonly ariaLabel = computed(() => (this.product() ? `${this.label()} about ${this.product()!.name}` : this.label()));
 }

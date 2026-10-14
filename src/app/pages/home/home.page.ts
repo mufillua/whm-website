@@ -3,6 +3,7 @@ import { Router, RouterLink } from '@angular/router';
 import { COMPANY } from '../../core/config/company.config';
 import { CatalogService } from '../../core/services/catalog.service';
 import { SeoService } from '../../core/services/seo.service';
+import { businessSchema, websiteSchema } from '../../core/services/schema';
 import { CATEGORY_GROUPS } from '../../data/taxonomy.data';
 import { RevealDirective } from '../../shared/directives/reveal.directive';
 import { CategoryCardComponent } from '../../shared/components/category-card/category-card.component';
@@ -81,8 +82,10 @@ export class HomePage {
   constructor() {
     this.catalog.load();
     inject(SeoService).set({
-      description: 'Western Hardware Mart, Kolkata — supplier and stockist of hydraulic valves, couplings, tube fittings, process instrumentation, hand tools and lifting equipment. Enquire on WhatsApp or email.',
+      fullTitle: 'Western Hardware Mart, Kolkata | Hydraulics, Gauges, Tools & Lifting',
+      description: 'Western Hardware Mart, Netaji Subhas Road, Kolkata — supplier & stockist of hydraulic valves, couplings, fittings, pressure gauges, Taparia hand tools and lifting equipment.',
       path: '/',
+      jsonLd: [websiteSchema(), businessSchema()],
     });
   }
 

@@ -43,7 +43,7 @@ export class IconComponent {
   constructor() {
     effect(() => {
       const el = this.host.nativeElement as HTMLElement;
-      el.replaceChildren();
+      for (const child of Array.from(el.childNodes)) this.r.removeChild(el, child);
       const data = ICONS[this.name()] ?? ICONS['package'];
       const svg = this.r.createElement('svg', SVG_NS);
       const attrs: Record<string, string | number> = {

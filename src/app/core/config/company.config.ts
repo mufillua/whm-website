@@ -23,7 +23,7 @@ export const COMPANY = {
   mapsUrl:
     'https://www.google.com/maps/search/?api=1&query=' +
     encodeURIComponent('Basundra Tower, 22 Netaji Subhas Road, Kolkata 700001'),
-  /** Placeholder until the live domain is confirmed. */
+  /** Live domain — used for canonical URLs, the sitemap, robots.txt, social tags and structured data. */
   siteUrl: 'https://westernhardwaremart.com',
   /** Social media profiles shown in the footer. */
   social: [

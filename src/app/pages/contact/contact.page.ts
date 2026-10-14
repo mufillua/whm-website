@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { COMPANY } from '../../core/config/company.config';
 import { SeoService } from '../../core/services/seo.service';
+import { breadcrumbSchema, businessSchema, pageSchema } from '../../core/services/schema';
 import { EmailButtonComponent } from '../../shared/components/email-button/email-button.component';
 import { IconComponent } from '../../shared/components/icon/icon.component';
 import { QuoteFormComponent } from '../../shared/components/quote-form/quote-form.component';
@@ -86,6 +87,12 @@ import { WhatsAppButtonComponent } from '../../shared/components/whatsapp-button
 export class ContactPage {
   readonly c = COMPANY;
   constructor() {
-    inject(SeoService).set({ title: 'Contact', description: 'Contact Western Hardware Mart — Shop No. 8, Basundra Tower, 22 Netaji Subhas Road, Kolkata 700001. Phone +91 98746 36636, email whm027@gmail.com.', path: '/contact' });
+    const description = 'Visit or call Western Hardware Mart — Shop No. 8, Basundra Tower, 22 Netaji Subhas Road, Kolkata 700001. Phone & WhatsApp +91 98746 36636, email whm027@gmail.com.';
+    inject(SeoService).set({
+      title: 'Contact Us – Netaji Subhas Road, Kolkata',
+      description,
+      path: '/contact',
+      jsonLd: [pageSchema('ContactPage', '/contact', 'Contact Western Hardware Mart', description), businessSchema(), breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Contact', path: '/contact' }])],
+    });
   }
 }

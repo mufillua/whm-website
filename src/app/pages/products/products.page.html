@@ -60,7 +60,7 @@
         </p>
         <label class="toolbar__sort">
           <span>Sort</span>
-          <select class="select" [value]="sort()" (change)="setSort($any($event.target).value)">
+          <select class="select" aria-label="Sort products" [value]="sort()" (change)="setSort($any($event.target).value)">
             @for (o of sortOptions; track o.key) { <option [value]="o.key" [selected]="o.key === sort()">{{ o.label }}</option> }
           </select>
         </label>
@@ -90,6 +90,7 @@
           </div>
         </div>
       } @else {
+        <h2 class="visually-hidden">{{ lockedCategory() ? (categoryInfo()?.name ?? 'Products') : 'Products' }}</h2>
         <whm-product-grid [products]="pageItems()" [eagerCount]="currentPage() === 1 ? 4 : 0" [animKey]="animKey()" label="Product results" />
         <whm-pagination [page]="currentPage()" [pages]="pages()" (pageChange)="setPage($event)" />
       }

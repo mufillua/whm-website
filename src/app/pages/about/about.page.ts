@@ -3,6 +3,7 @@ import { RouterLink } from '@angular/router';
 import { COMPANY } from '../../core/config/company.config';
 import { CatalogService } from '../../core/services/catalog.service';
 import { SeoService } from '../../core/services/seo.service';
+import { breadcrumbSchema, businessSchema, pageSchema } from '../../core/services/schema';
 import { CATEGORY_GROUPS } from '../../data/taxonomy.data';
 import { IconComponent } from '../../shared/components/icon/icon.component';
 import { RevealDirective } from '../../shared/directives/reveal.directive';
@@ -34,7 +35,13 @@ export class AboutPage {
 
   constructor() {
     this.catalog.load();
-    inject(SeoService).set({ title: 'About Us', description: 'Western Hardware Mart is a Kolkata supplier and stockist of hydraulic, process instrumentation, hand tool and lifting products, run by partners M. Maimoon and H. Lokhandwala.', path: '/about' });
+    const description = 'Western Hardware Mart is a Kolkata supplier and stockist of hydraulic, process instrumentation, hand tool and lifting products on Netaji Subhas Road, run by partners M. Maimoon and H. Lokhandwala.';
+    inject(SeoService).set({
+      title: 'About Us',
+      description,
+      path: '/about',
+      jsonLd: [pageSchema('AboutPage', '/about', 'About Western Hardware Mart', description), businessSchema(), breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'About Us', path: '/about' }])],
+    });
   }
   countIn(group: string): number {
     return this.catalog.categories.filter((c) => c.group === group).reduce((n, c) => n + (this.catalog.categoryCounts().get(c.slug) ?? 0), 0);
