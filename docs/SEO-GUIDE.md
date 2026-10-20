@@ -23,10 +23,14 @@ only you can take outside the code. Those outside steps decide how high the site
 | **Canonical URL** on every page; search/filter views marked `noindex` | No duplicate-content dilution |
 | **Structured data** (schema.org): `HardwareStore` with address, phone, email, hours, map and social profiles; `WebSite` (site name); `BreadcrumbList` on every page; `ItemPage` / `CollectionPage` | Helps Google show your business details, site name and breadcrumbs in results |
 | Social share tags + a branded **share card** image (`/assets/seo/share-card.jpg`) | Good-looking previews on WhatsApp, Facebook, LinkedIn, X |
+<<<<<<< HEAD
 | `sitemap.xml` index → `sitemap-pages.xml`, `sitemap-categories.xml`, `sitemap-products.xml` (672 pages + 648 product photos) and `robots.txt`, regenerated on every build | Google finds every product and image; Search Console reports indexing per group |
 | **Every page reachable by links within 2 clicks of the home page**: crawlable pagination (`?page=N` links), an A–Z list of all products on each category page, and a `/site-map` page linked from the footer | Google crawls and indexes pages it reaches through links much sooner than sitemap-only pages |
 | **Overview paragraph on every product page**, written from the product's own size table, part numbers and specifications (nothing invented); search snippets use it when the catalogue description is short | Thin pages are the main reason Google crawls a page but doesn't index it |
 | IndexNow key + `npm run indexnow` | Bing, Yahoo, DuckDuckGo and other IndexNow engines learn about every page within hours |
+=======
+| `sitemap.xml` (671 pages + 648 product photos) and `robots.txt`, regenerated on every build | Google finds every product and image |
+>>>>>>> d752cd3a10eb927d84f814ad98b0f44f1a7459aa
 | Real **404 status** for unknown addresses (`404.html`) | No "soft 404" errors in Search Console |
 | Favicon set, Apple touch icon, web manifest | Your logo appears next to the site in Google results and on phones |
 | Fonts preloaded, catalogue preloaded, lighter hero animations | Faster pages, which are a ranking factor (Core Web Vitals) |
@@ -95,6 +99,7 @@ Each genuine link from a relevant site raises your authority:
 * Trade bodies, local chambers of commerce, market associations (e.g. Netaji Subhas Road / BBD Bag traders).
 * Customers and partners who mention suppliers on their sites.
 
+<<<<<<< HEAD
 ## 7. Getting "Discovered / Crawled – currently not indexed" pages indexed
 
 Nobody can force Google to index a page; Google decides, page by page. What moves the numbers, in order:
@@ -119,6 +124,9 @@ Pages listed as **"Alternate page with proper canonical tag"**, **"Page with red
 fix) or **"Excluded by noindex"** (search/filter views, 404s) are working as intended — ignore them.
 
 ## 8. Keeping it healthy
+=======
+## 7. Keeping it healthy
+>>>>>>> d752cd3a10eb927d84f814ad98b0f44f1a7459aa
 
 * **Adding or changing products:** edit the data, run `npm run build`. The sitemap, product pages and tags update
   automatically. Search Console picks up changes from the sitemap.

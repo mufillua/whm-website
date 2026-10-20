@@ -4,7 +4,10 @@ import { COMPANY } from '../../core/config/company.config';
 import { CatalogService } from '../../core/services/catalog.service';
 import { SeoService } from '../../core/services/seo.service';
 import { breadcrumbSchema, pageSchema } from '../../core/services/schema';
+<<<<<<< HEAD
 import { cleanModel, productFacts, productOverview } from '../../core/utils/product-overview';
+=======
+>>>>>>> d752cd3a10eb927d84f814ad98b0f44f1a7459aa
 import { EmailButtonComponent } from '../../shared/components/email-button/email-button.component';
 import { IconComponent } from '../../shared/components/icon/icon.component';
 import { ProductGalleryComponent } from '../../shared/components/product-gallery/product-gallery.component';
@@ -63,6 +66,7 @@ export class ProductDetailPage {
       }
       const brand = this.brand()?.name;
       const cat = this.category();
+<<<<<<< HEAD
       const model = cleanModel(p);
       const name = p.name + (model ? ` (${model})` : '');
       const title = brand && !name.toLowerCase().includes(brand.toLowerCase()) ? `${name} – ${brand}` : name;
@@ -78,6 +82,15 @@ export class ProductDetailPage {
       const room = 158 - tail.length;
       if (text.length > room) text = text.slice(0, room).replace(/\s+\S*$/, '').replace(/[,;:—–(-]+$/, '').trim() + '…';
       const leadCut = text;
+=======
+      const name = p.name + (p.modelCode && !p.name.includes(p.modelCode) ? ` (${p.modelCode})` : '');
+      const title = brand && !name.toLowerCase().includes(brand.toLowerCase()) ? `${name} – ${brand}` : name;
+      // Lead with the product's own text, then name the brand/model and the Kolkata supplier — trimmed to snippet length.
+      const tail = ` ${[brand, p.modelCode && `model ${p.modelCode}`].filter(Boolean).join(' ')} available from Western Hardware Mart, Kolkata. Enquire for price.`.replace(/^\s+ available/, ' Available');
+      const lead = (p.shortDescription ?? `${p.name}${cat ? ` — ${cat.name.toLowerCase()}` : ''}.`).replace(/\s+/g, ' ').trim();
+      const room = 158 - tail.length;
+      const leadCut = lead.length <= room ? lead : lead.slice(0, room).replace(/\s+\S*$/, '').replace(/[,;:—–-]+$/, '') + '…';
+>>>>>>> d752cd3a10eb927d84f814ad98b0f44f1a7459aa
       const crumbs = [
         { name: 'Home', path: '/' },
         { name: 'Products', path: '/products' },

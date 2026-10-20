@@ -10,6 +10,7 @@ import { IconComponent } from '../icon/icon.component';
   template: `
     @if (pages() > 1) {
       <nav class="pg" aria-label="Pagination">
+<<<<<<< HEAD
         @if (page() > 1) {
           <a class="pg__btn pg__nav" [routerLink]="[]" [queryParams]="qp(page() - 1)" queryParamsHandling="merge" rel="prev"
              (click)="go(page() - 1)" aria-label="Previous page">
@@ -18,6 +19,11 @@ import { IconComponent } from '../icon/icon.component';
         } @else {
           <span class="pg__btn pg__nav is-disabled" aria-disabled="true"><whm-icon name="chevron-left" [size]="18" /><span>Previous</span></span>
         }
+=======
+        <button type="button" class="pg__btn pg__nav" [disabled]="page() <= 1" (click)="go(page() - 1)" aria-label="Previous page">
+          <whm-icon name="chevron-left" [size]="18" /><span>Previous</span>
+        </button>
+>>>>>>> d752cd3a10eb927d84f814ad98b0f44f1a7459aa
         <ol class="pg__list">
           @for (it of items(); track $index) {
             <li>
@@ -31,6 +37,7 @@ import { IconComponent } from '../icon/icon.component';
             </li>
           }
         </ol>
+<<<<<<< HEAD
         @if (page() < pages()) {
           <a class="pg__btn pg__nav" [routerLink]="[]" [queryParams]="qp(page() + 1)" queryParamsHandling="merge" rel="next"
              (click)="go(page() + 1)" aria-label="Next page">
@@ -39,6 +46,11 @@ import { IconComponent } from '../icon/icon.component';
         } @else {
           <span class="pg__btn pg__nav is-disabled" aria-disabled="true"><span>Next</span><whm-icon name="chevron-right" [size]="18" /></span>
         }
+=======
+        <button type="button" class="pg__btn pg__nav" [disabled]="page() >= pages()" (click)="go(page() + 1)" aria-label="Next page">
+          <span>Next</span><whm-icon name="chevron-right" [size]="18" />
+        </button>
+>>>>>>> d752cd3a10eb927d84f814ad98b0f44f1a7459aa
       </nav>
     }
   `,
