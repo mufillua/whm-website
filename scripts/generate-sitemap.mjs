@@ -40,12 +40,9 @@ for (const required of ['', 'products', 'categories', 'about', 'contact', 'get-a
 /** Last-changed date of a file: its latest git commit when available (stable across deploys), else its mtime. */
 const day = (file) => {
   try {
-<<<<<<< HEAD
     const git = (args) => execFileSync('git', args, { cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
     // uncommitted edits are newer than the last commit — use the file's own date for those
     if (git(['status', '--porcelain', '--', file])) return fs.statSync(abs(file)).mtime.toISOString().slice(0, 10);
-=======
->>>>>>> d752cd3a10eb927d84f814ad98b0f44f1a7459aa
     const d = execFileSync('git', ['log', '-1', '--format=%cs', '--', file], { cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
     if (/^\d{4}-\d{2}-\d{2}$/.test(d)) return d;
   } catch { /* no git — fall back to the file's own date */ }
@@ -59,7 +56,6 @@ const dirDay = (dir) => fs.readdirSync(abs(dir)).map((f) => day(path.join(dir, f
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
 const url = (p) => site + (p ? '/' + p.split('/').map(encodeURIComponent).join('/') : '/');
 
-<<<<<<< HEAD
 // Three child sitemaps behind one index at /sitemap.xml, so Search Console reports indexing separately for
 // main pages, categories and products (Search Console → Sitemaps → click each one).
 const groups = { pages: [], categories: [], products: [] };
@@ -73,15 +69,6 @@ const latest = (...days) => days.sort().pop();
 const categoryDay = latest(dataDay, dirDay('src/app/pages/products'), dirDay('src/app/shared/components/pagination'));
 const productDay = latest(dataDay, dirDay('src/app/pages/product-detail'), dirDay('src/app/core/utils'));
 for (const c of CATEGORIES) groups.categories.push({ loc: url('categories/' + c.slug), lastmod: categoryDay });
-=======
-const entries = [];
-for (const p of staticPaths) {
-  // home and the listing pages also change whenever the catalogue changes
-  const d = pageFile[p] ? dirDay(pageFile[p]) : dataDay;
-  entries.push({ loc: url(p), lastmod: ['', 'products', 'categories'].includes(p) ? [d, dataDay].sort().pop() : d });
-}
-for (const c of CATEGORIES) entries.push({ loc: url('categories/' + c.slug), lastmod: dataDay });
->>>>>>> d752cd3a10eb927d84f814ad98b0f44f1a7459aa
 
 let imageCount = 0;
 for (const p of PRODUCTS) {
@@ -89,7 +76,6 @@ for (const p of PRODUCTS) {
     .filter((src) => src.startsWith('/assets/') && fs.existsSync(abs('public' + src)))
     .map((src) => site + src.split('/').map(encodeURIComponent).join('/'));
   imageCount += images.length;
-<<<<<<< HEAD
   groups.products.push({ loc: url('products/' + p.slug), lastmod: productDay, images });
 }
 
@@ -102,19 +88,6 @@ const urlset = (list) => [
   '<?xml version="1.0" encoding="UTF-8"?>',
   '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">',
   ...list.map((e) => [
-=======
-  entries.push({ loc: url('products/' + p.slug), lastmod: dataDay, images });
-}
-
-const locs = entries.map((e) => e.loc);
-if (new Set(locs).size !== locs.length) throw new Error('duplicate URLs in sitemap');
-if (entries.length > 50000) throw new Error('sitemap exceeds 50,000 URLs — split it into a sitemap index');
-
-const xml = [
-  '<?xml version="1.0" encoding="UTF-8"?>',
-  '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">',
-  ...entries.map((e) => [
->>>>>>> d752cd3a10eb927d84f814ad98b0f44f1a7459aa
     '  <url>',
     `    <loc>${esc(e.loc)}</loc>`,
     `    <lastmod>${e.lastmod}</lastmod>`,
@@ -125,7 +98,6 @@ const xml = [
   '',
 ].join('\n');
 
-<<<<<<< HEAD
 let bytes = 0;
 const children = [];
 for (const [name, list] of Object.entries(groups)) {
@@ -147,11 +119,3 @@ fs.writeFileSync(abs('public/robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: 
 
 console.log(`sitemap: ${entries.length} URLs (${groups.pages.length} pages, ${groups.categories.length} categories, ${groups.products.length} products), ` +
   `${imageCount} images, ${(bytes / 1024).toFixed(0)} KB -> public/sitemap.xml (index) + ${children.length} child sitemaps (+ robots.txt) for ${site}`);
-=======
-fs.writeFileSync(abs('public/sitemap.xml'), xml);
-fs.writeFileSync(abs('public/robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${site}/sitemap.xml\n`);
-
-const kb = (Buffer.byteLength(xml) / 1024).toFixed(0);
-console.log(`sitemap: ${entries.length} URLs (${staticPaths.length} pages, ${CATEGORIES.length} categories, ${PRODUCTS.length} products), ` +
-  `${imageCount} images, ${kb} KB -> public/sitemap.xml (+ robots.txt) for ${site}`);
->>>>>>> d752cd3a10eb927d84f814ad98b0f44f1a7459aa
