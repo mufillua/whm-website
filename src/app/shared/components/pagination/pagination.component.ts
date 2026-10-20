@@ -1,30 +1,44 @@
 import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { IconComponent } from '../icon/icon.component';
 
 @Component({
   selector: 'whm-pagination',
-  imports: [IconComponent],
+  imports: [RouterLink, IconComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  // Real links (not buttons) so search engines can follow every page of a category; clicks are still handled in-app.
   template: `
     @if (pages() > 1) {
       <nav class="pg" aria-label="Pagination">
-        <button type="button" class="pg__btn pg__nav" [disabled]="page() <= 1" (click)="go(page() - 1)">
-          <whm-icon name="chevron-left" [size]="18" /><span>Previous</span>
-        </button>
+        @if (page() > 1) {
+          <a class="pg__btn pg__nav" [routerLink]="[]" [queryParams]="qp(page() - 1)" queryParamsHandling="merge" rel="prev"
+             (click)="go(page() - 1)" aria-label="Previous page">
+            <whm-icon name="chevron-left" [size]="18" /><span>Previous</span>
+          </a>
+        } @else {
+          <span class="pg__btn pg__nav is-disabled" aria-disabled="true"><whm-icon name="chevron-left" [size]="18" /><span>Previous</span></span>
+        }
         <ol class="pg__list">
           @for (it of items(); track $index) {
             <li>
               @if (it === 0) { <span class="pg__gap" aria-hidden="true">…</span> }
-              @else {
-                <button type="button" class="pg__btn pg__num" [class.is-current]="it === page()"
-                        [attr.aria-current]="it === page() ? 'page' : null" [attr.aria-label]="'Page ' + it" (click)="go(it)">{{ it }}</button>
+              @else if (it === page()) {
+                <span class="pg__btn pg__num is-current" aria-current="page" [attr.aria-label]="'Page ' + it">{{ it }}</span>
+              } @else {
+                <a class="pg__btn pg__num" [routerLink]="[]" [queryParams]="qp(it)" queryParamsHandling="merge"
+                   [attr.aria-label]="'Page ' + it" (click)="go(it)">{{ it }}</a>
               }
             </li>
           }
         </ol>
-        <button type="button" class="pg__btn pg__nav" [disabled]="page() >= pages()" (click)="go(page() + 1)">
-          <span>Next</span><whm-icon name="chevron-right" [size]="18" />
-        </button>
+        @if (page() < pages()) {
+          <a class="pg__btn pg__nav" [routerLink]="[]" [queryParams]="qp(page() + 1)" queryParamsHandling="merge" rel="next"
+             (click)="go(page() + 1)" aria-label="Next page">
+            <span>Next</span><whm-icon name="chevron-right" [size]="18" />
+          </a>
+        } @else {
+          <span class="pg__btn pg__nav is-disabled" aria-disabled="true"><span>Next</span><whm-icon name="chevron-right" [size]="18" /></span>
+        }
       </nav>
     }
   `,
@@ -33,9 +47,9 @@ import { IconComponent } from '../icon/icon.component';
     .pg__list { list-style: none; display: flex; gap: 6px; padding: 0; margin: 0; flex-wrap: wrap; justify-content: center; }
     .pg__btn { min-width: 42px; height: 42px; padding: 0 12px; border-radius: var(--r-sm); border: 1px solid var(--c-line); background: var(--bg-raised);
       font-weight: 700; color: var(--c-ink-2); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px;
-      font-variant-numeric: tabular-nums; transition: border-color var(--t-fast), background var(--t-fast), color var(--t-fast); }
-    .pg__btn:hover:not([disabled]) { border-color: var(--c-primary); color: var(--c-primary); }
-    .pg__btn[disabled] { opacity: .45; cursor: not-allowed; }
+      font-variant-numeric: tabular-nums; text-decoration: none; transition: border-color var(--t-fast), background var(--t-fast), color var(--t-fast); }
+    .pg__btn:hover:not(.is-disabled):not(.is-current) { border-color: var(--c-primary); color: var(--c-primary); }
+    .pg__btn.is-disabled { opacity: .45; cursor: not-allowed; }
     .pg__num.is-current { background: var(--c-primary); border-color: var(--c-primary); color: #fff; }
     .pg__gap { display: inline-flex; width: 24px; justify-content: center; color: var(--c-muted); }
     @media (max-width: 520px) { .pg__nav span { display: none; } .pg__btn { min-width: 38px; height: 40px; padding: 0 8px; } }
@@ -56,6 +70,11 @@ export class PaginationComponent {
     sorted.forEach((n, i) => { if (i && n - sorted[i - 1] > 1) out.push(0); out.push(n); });
     return out;
   });
+
+  /** Page 1 has no ?page= so it matches the canonical URL. */
+  qp(p: number): Record<string, number | null> {
+    return { page: p > 1 ? p : null };
+  }
 
   go(p: number): void {
     if (p >= 1 && p <= this.pages() && p !== this.page()) this.pageChange.emit(p);

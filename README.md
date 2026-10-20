@@ -59,9 +59,28 @@ The marine container (`marine-container-40ft`) was supplied directly rather than
 with no manufacturer brand. The home page carousel order is the `CAROUSEL` list in `pages/home/home.page.ts`, and
 `FEATURED_PRODUCT_ID` picks the slide shown as "Featured".
 
+## SEO and prerendering
+
+Every page is prerendered to static HTML at build time (`outputMode: "static"` with `src/main.server.ts`,
+`src/app/app.config.server.ts` and `src/app/app.routes.server.ts`). The browser app then hydrates that HTML.
+
+* `npm run build` → `prebuild` (data check + `scripts/generate-sitemap.mjs`) → `ng build` (prerenders 671 pages)
+  → `postbuild` (`scripts/postbuild.mjs`: writes `404.html` and adds font/catalogue preloads).
+* Output to deploy: `dist/whm-website/browser` (`vercel.json` is set up for Vercel).
+* Page titles, descriptions, canonical URLs, social tags and robots: `src/app/core/services/seo.service.ts`.
+* Structured data (schema.org JSON-LD): `src/app/core/services/schema.ts`.
+* Domain: `COMPANY.siteUrl` in `src/app/core/config/company.config.ts` (`https://westernhardwaremart.com`).
+* Code that touches `window`/`document` must run only in the browser (`afterNextRender`, event handlers),
+  because the same code runs at build time to prerender.
+
+* Crawl paths: pagination renders real `?page=N` links; category pages list every product A–Z; `/site-map` links every
+  page (footer). Product overview text comes from `src/app/core/utils/product-overview.ts` (restates table data only).
+* `npm run indexnow` (after deploying) submits every sitemap URL to IndexNow (Bing etc.) using the key file in `public/`.
+
+Launch steps outside the code (Search Console, Google Business Profile, listings, indexing playbook): **docs/SEO-GUIDE.md**.
+
 ### Known gaps
 
 * 8 Yuken products reference image files that were not supplied (`/assets/products/PVR-Series-Double-Vane-Pumps.jpg`
   etc.). They show a designed placeholder until the files are added under `public/assets/products/`.
 * Hydroline and Yuken images are hot-linked to the manufacturers' own sites, as in the supplied file.
-* `COMPANY.siteUrl` is a placeholder until the domain is confirmed (used for canonical and Open Graph URLs).

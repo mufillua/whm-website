@@ -13585,11 +13585,11 @@ export const PRODUCTS: Product[] = [
   "id": "taparia-2-a-combination-side-cutting-pliers",
   "slug": "taparia-2-a-combination-side-cutting-pliers",
   "name": "Combination Side Cutting Pliers",
-  "modelCode": "1621-6 – 2. (B) LONG NOSE PLIE Insulated with thick C.A.",
+  "modelCode": "1621-6 – 1621-8/1621-8N",
   "brandSlug": "taparia",
   "categorySlug": "pliers",
   "productType": "pliers",
-  "shortDescription": "Combination Side Cutting Pliers — 4 sizes / variants available.",
+  "shortDescription": "Combination Side Cutting Pliers — 3 sizes / variants available.",
   "specifications": [
    {
     "label": "Standard",
@@ -13618,10 +13618,6 @@ export const PRODUCTS: Product[] = [
      [
       "1621-8/1621-8N",
       "200"
-     ],
-     [
-      "2. (B) LONG NOSE PLIE Insulated with thick C.A.",
-      "RS Sleeve"
      ]
     ]
    }

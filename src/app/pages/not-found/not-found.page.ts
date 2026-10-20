@@ -36,7 +36,7 @@ import { SearchBarComponent } from '../../shared/components/search-bar/search-ba
 export class NotFoundPage {
   private readonly router = inject(Router);
   constructor() {
-    inject(SeoService).set({ title: 'Page not found', description: 'The page you are looking for could not be found.' });
+    inject(SeoService).set({ title: 'Page not found', description: 'The page you are looking for could not be found.', noindex: true });
   }
   search(q: string): void { this.router.navigate(['/products'], { queryParams: q.trim() ? { q: q.trim() } : {} }); }
 }

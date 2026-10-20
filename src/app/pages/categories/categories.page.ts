@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CatalogService } from '../../core/services/catalog.service';
 import { SeoService } from '../../core/services/seo.service';
+import { breadcrumbSchema, pageSchema } from '../../core/services/schema';
 import { CATEGORY_GROUPS } from '../../data/taxonomy.data';
 import { CategoryCardComponent } from '../../shared/components/category-card/category-card.component';
 import { IconComponent } from '../../shared/components/icon/icon.component';
@@ -60,7 +61,13 @@ export class CategoriesPage {
 
   constructor() {
     this.catalog.load();
-    inject(SeoService).set({ title: 'Product Categories', description: 'Browse all product categories at Western Hardware Mart — hydraulics, process instrumentation, hand tools, and lifting & material handling.', path: '/categories' });
+    const description = `All ${this.catalog.categories.length} product categories at Western Hardware Mart, Kolkata — hydraulic valves and couplings, pressure gauges and instrumentation, hand tools, and lifting & material handling.`;
+    inject(SeoService).set({
+      title: 'Product Categories',
+      description,
+      path: '/categories',
+      jsonLd: [pageSchema('CollectionPage', '/categories', 'Product Categories', description), breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Categories', path: '/categories' }])],
+    });
   }
   inGroup(id: string) { return this.catalog.categories.filter((c) => c.group === id); }
   groupCount(id: string): number { return this.inGroup(id).reduce((n, c) => n + (this.catalog.categoryCounts().get(c.slug) ?? 0), 0); }

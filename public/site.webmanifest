@@ -1,0 +1,14 @@
+{
+  "name": "Western Hardware Mart",
+  "short_name": "Western Hardware",
+  "description": "Hydraulic valves, couplings, fittings, pressure gauges, hand tools and lifting equipment — Western Hardware Mart, Kolkata.",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#eef4f8",
+  "theme_color": "#0e6690",
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

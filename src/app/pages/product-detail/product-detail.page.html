@@ -31,6 +31,7 @@
           </dl>
 
           @if (p.shortDescription) { <p class="pd__desc">{{ p.shortDescription }}</p> }
+          <p class="pd__overview">{{ overview() }}</p>
 
           @if (keySpecs().length) {
             <ul class="pd__keys">

@@ -71,3 +71,16 @@
   .toolbar__sort { margin-left: auto; span { display: none; } }
   .hero-band__count { display: none; }
 }
+
+/* A–Z list of every product in the category */
+.cat-index { margin-top: var(--s-10); border: 1px solid var(--c-line); border-radius: var(--r-md); background: var(--bg-card); }
+.cat-index summary { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); padding: 16px 20px; cursor: pointer; list-style: none;
+  &::-webkit-details-marker { display: none; }
+  h2 { margin: 0; font-size: 1.02rem; font-family: var(--f-body); font-weight: 700; color: var(--c-ink); }
+  whm-icon { color: var(--c-primary); transition: transform var(--t-fast); flex-shrink: 0; }
+  &:hover h2 { color: var(--c-primary-deep); } }
+.cat-index[open] summary whm-icon { transform: rotate(180deg); }
+.cat-index__list { list-style: none; margin: 0; padding: 4px 20px 18px; columns: 3 260px; column-gap: 32px; border-top: 1px dashed var(--c-line-strong);
+  li { break-inside: avoid; padding: 7px 0; border-bottom: 1px solid var(--c-line); font-size: 0.9rem; line-height: 1.35; }
+  a { color: var(--c-ink-2); text-decoration: none; } a:hover { color: var(--c-primary); text-decoration: underline; }
+  span { display: inline-block; margin-left: 6px; font-size: 0.72rem; font-weight: 700; color: var(--c-indigo); } }

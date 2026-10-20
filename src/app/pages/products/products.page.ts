@@ -4,6 +4,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { Product } from '../../core/models/product.model';
 import { CatalogService } from '../../core/services/catalog.service';
 import { SeoService } from '../../core/services/seo.service';
+import { breadcrumbSchema, pageSchema } from '../../core/services/schema';
 import { CATEGORY_GROUPS } from '../../data/taxonomy.data';
 import { IconComponent } from '../../shared/components/icon/icon.component';
 import { PaginationComponent } from '../../shared/components/pagination/pagination.component';
@@ -131,6 +132,17 @@ export class ProductsPage {
     return chips;
   });
 
+  /** All products in the current category, A–Z (category pages only). */
+  readonly categoryIndex = computed(() => {
+    const slug = this.lockedCategory();
+    if (!slug) return [];
+    return this.catalog
+      .products()
+      .filter((p) => this.catalog.categoryOf(p)?.slug === slug)
+      .map((p) => ({ slug: p.slug, name: p.name, brand: this.catalog.brandOf(p)?.name }))
+      .sort((a, b) => a.name.localeCompare(b.name));
+  });
+
   private qTimer?: ReturnType<typeof setTimeout>;
 
   constructor() {
@@ -143,12 +155,44 @@ export class ProductsPage {
     effect(() => {
       const info = this.categoryInfo();
       const slug = this.lockedCategory();
+      const qp = this.qp();
+      const page = this.page();
+      // Search and filter views are useful to visitors but are duplicates for search engines.
+      const filtered = ['q', 'brand', 'type', 'sort', 'category'].some((k) => !!qp.get(k));
+      const pageSuffix = page > 1 ? ` – Page ${page}` : '';
+      const pageQuery = page > 1 ? `?page=${page}` : '';
       if (slug && info) {
-        this.seo.set({ title: info.name, description: `${info.name} — ${info.description} Supplied by Western Hardware Mart, Kolkata.`, path: `/categories/${slug}` });
+        const inCat = this.catalog.products().filter((p) => this.catalog.categoryOf(p)?.slug === slug);
+        const brandNames = [...new Set(inCat.map((p) => this.catalog.brandOf(p)?.name).filter((b): b is string => !!b))];
+        const count = inCat.length ? `${inCat.length} products${brandNames.length ? ` from ${brandNames.join(', ')}` : ''}. ` : '';
+        const description = `${info.description} ${count}Supplier in Kolkata — enquire with Western Hardware Mart on WhatsApp.`;
+        this.seo.set({
+          title: `${info.name} Supplier in Kolkata${pageSuffix}`,
+          description,
+          path: `/categories/${slug}${pageQuery}`,
+          image: this.catalog.categoryImages().get(slug),
+          imageAlt: info.name,
+          noindex: filtered,
+          jsonLd: [
+            pageSchema('CollectionPage', `/categories/${slug}`, info.name, description),
+            breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Categories', path: '/categories' }, { name: info.name, path: `/categories/${slug}` }]),
+          ],
+        });
       } else if (slug) {
-        this.seo.set({ title: 'Category not found', description: 'This category does not exist.', path: `/categories/${slug}` });
+        this.seo.set({ title: 'Category not found', description: 'This category does not exist.', path: `/categories/${slug}`, noindex: true });
       } else {
-        this.seo.set({ title: 'Products', description: 'Browse hydraulic valves, couplings, tube fittings, process instrumentation, hand tools and lifting equipment stocked by Western Hardware Mart, Kolkata.', path: '/products' });
+        const total = this.catalog.products().length;
+        const description = `Browse ${total || 'over 600'} industrial products: hydraulic valves, quick release couplings, tube fittings, pressure gauges, Taparia hand tools and lifting equipment — stocked by Western Hardware Mart, Kolkata.`;
+        this.seo.set({
+          title: `Industrial Products Catalogue${pageSuffix}`,
+          description,
+          path: `/products${pageQuery}`,
+          noindex: filtered,
+          jsonLd: [
+            pageSchema('CollectionPage', '/products', 'Products', description),
+            breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Products', path: '/products' }]),
+          ],
+        });
       }
     });
   }

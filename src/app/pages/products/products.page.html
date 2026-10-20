@@ -60,7 +60,7 @@
         </p>
         <label class="toolbar__sort">
           <span>Sort</span>
-          <select class="select" [value]="sort()" (change)="setSort($any($event.target).value)">
+          <select class="select" aria-label="Sort products" [value]="sort()" (change)="setSort($any($event.target).value)">
             @for (o of sortOptions; track o.key) { <option [value]="o.key" [selected]="o.key === sort()">{{ o.label }}</option> }
           </select>
         </label>
@@ -90,8 +90,21 @@
           </div>
         </div>
       } @else {
+        <h2 class="visually-hidden">{{ lockedCategory() ? (categoryInfo()?.name ?? 'Products') : 'Products' }}</h2>
         <whm-product-grid [products]="pageItems()" [eagerCount]="currentPage() === 1 ? 4 : 0" [animKey]="animKey()" label="Product results" />
         <whm-pagination [page]="currentPage()" [pages]="pages()" (pageChange)="setPage($event)" />
+      }
+
+      @if (categoryIndex().length) {
+        <!-- Every product in this category, one click away: a quick A–Z list for visitors and a direct path for search engines. -->
+        <details class="cat-index">
+          <summary><h2>All {{ categoryIndex().length }} {{ categoryInfo()?.name }} products, A–Z</h2><whm-icon name="chevron-down" [size]="18" /></summary>
+          <ul class="cat-index__list">
+            @for (p of categoryIndex(); track p.slug) {
+              <li><a [routerLink]="['/products', p.slug]">{{ p.name }}</a>@if (p.brand) { <span>{{ p.brand }}</span> }</li>
+            }
+          </ul>
+        </details>
       }
     </div>
   </div>

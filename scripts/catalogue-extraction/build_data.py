@@ -519,6 +519,21 @@ for p in products:
         if p[k] in (None, [], ''): del p[k]
     p.setdefault('specifications', [])
 
+# Drop variant rows that are really the next section's heading leaking into a table
+# (e.g. "2. (B) LONG NOSE PLIE..." at the end of 2.(A) Combination Side Cutting Pliers), then recompute the
+# model-code range and size count from the remaining rows.
+LEAKED_ROW = re.compile(r'^\d+\.\s*\([A-Z]{1,2}\)\s')
+for p in products:
+    changed = False
+    for v in p.get('variants') or []:
+        keep = [r for r in v['rows'] if not LEAKED_ROW.match(str(r[0]))]
+        if len(keep) != len(v['rows']):
+            v['rows'], changed = keep, True
+    if changed and p['variants'][0]['rows']:
+        rows = p['variants'][0]['rows']
+        p['modelCode'] = rows[0][0] if len(rows) == 1 else f"{rows[0][0]} – {rows[-1][0]}"
+        p['shortDescription'] = re.sub(r'\d+ sizes / variants', f"{len(rows)} sizes / variants", p.get('shortDescription') or '')
+
 json.dump(products, open(f'{W}/data/products_backup.json', 'w'), indent=1, ensure_ascii=False)
 print('TOTAL', len(products))
 print(Counter(p.get('brandSlug', '(none)') for p in products))

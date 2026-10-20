@@ -1,4 +1,4 @@
-import { Injectable, computed, signal } from '@angular/core';
+import { Injectable, PendingTasks, computed, inject, signal } from '@angular/core';
 import { Brand, Category, Product, ProductType } from '../models/product.model';
 import { BRANDS, CATEGORIES, PRODUCT_TYPES } from '../../data/taxonomy.data';
 
@@ -43,12 +43,20 @@ export class CatalogService {
     return imgs;
   });
 
+  private readonly pendingTasks = inject(PendingTasks);
+
   load(): Promise<Product[]> {
-    this.loading ??= import('../../data/products.data').then((m) => {
-      this._products.set(m.PRODUCTS);
-      this.loaded.set(true);
-      return m.PRODUCTS;
-    });
+    if (!this.loading) {
+      // Registered as a pending task so prerendering waits for the catalogue before writing each page's HTML.
+      const done = this.pendingTasks.add();
+      this.loading = import('../../data/products.data')
+        .then((m) => {
+          this._products.set(m.PRODUCTS);
+          this.loaded.set(true);
+          return m.PRODUCTS;
+        })
+        .finally(done);
+    }
     return this.loading;
   }
 

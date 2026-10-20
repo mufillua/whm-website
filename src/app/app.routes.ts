@@ -9,5 +9,6 @@ export const routes: Routes = [
   { path: 'about', loadComponent: () => import('./pages/about/about.page').then((m) => m.AboutPage) },
   { path: 'contact', loadComponent: () => import('./pages/contact/contact.page').then((m) => m.ContactPage) },
   { path: 'get-a-quote', loadComponent: () => import('./pages/quote/quote.page').then((m) => m.QuotePage) },
+  { path: 'site-map', loadComponent: () => import('./pages/site-map/site-map.page').then((m) => m.SiteMapPage) },
   { path: '**', loadComponent: () => import('./pages/not-found/not-found.page').then((m) => m.NotFoundPage) },
 ];
