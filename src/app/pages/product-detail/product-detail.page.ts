@@ -5,7 +5,10 @@ import { CatalogService } from '../../core/services/catalog.service';
 import { SeoService } from '../../core/services/seo.service';
 import { breadcrumbSchema, pageSchema } from '../../core/services/schema';
 import { cleanModel, productFacts, productOverview } from '../../core/utils/product-overview';
+<<<<<<< HEAD
 import { PRODUCT_SEARCH_NAMES } from '../../data/category-seo.data';
+=======
+>>>>>>> 764562bcfbbe7d67a4c93f989f078214fae87692
 import { EmailButtonComponent } from '../../shared/components/email-button/email-button.component';
 import { IconComponent } from '../../shared/components/icon/icon.component';
 import { ProductGalleryComponent } from '../../shared/components/product-gallery/product-gallery.component';

@@ -121,6 +121,7 @@ Nobody can force Google to index a page; Google decides, page by page. What move
 Pages listed as **"Alternate page with proper canonical tag"**, **"Page with redirect"** (the non-www and `http://`
 addresses) or **"Excluded by noindex"** (search/filter views, 404s) are working as intended — ignore them.
 
+<<<<<<< HEAD
 ## 8. Keywords: what people search, and which page targets it
 
 Monthly Google searches in India (OpenSEO / DataForSEO, Oct 2026). "… in Kolkata" phrasings get almost no searches —
@@ -162,6 +163,9 @@ your Google Business Profile is already #1 in the map results. To own your name:
 * Use "Western Hardware Mart, Netaji Subhas Road" on social profiles and in WhatsApp signatures.
 
 ## 9. Keeping it healthy
+=======
+## 8. Keeping it healthy
+>>>>>>> 764562bcfbbe7d67a4c93f989f078214fae87692
 
 * **Adding or changing products:** edit the data, run `npm run build`. The sitemap, product pages and tags update
   automatically. Search Console picks up changes from the sitemap.
