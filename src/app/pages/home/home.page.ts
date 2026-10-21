@@ -58,6 +58,22 @@ export class HomePage {
   readonly featuredId = FEATURED_PRODUCT_ID;
   readonly productCount = computed(() => this.catalog.products().length);
 
+  /** High-demand searches (India, monthly volume in comments) linked straight to the page that answers them. */
+  readonly popular = [
+    { label: 'Pressure gauges', link: ['/categories', 'pressure-gauges'] }, // 22,200
+    { label: 'Hand pallet trucks', link: ['/products', 'lifting-hand-pallet-truck'] }, // 6,600
+    { label: 'D shackles & bow shackles', link: ['/categories', 'slings-rigging'] }, // 6,600 + 1,900
+    { label: 'Flow control & needle valves', link: ['/categories', 'flow-control-valves'] }, // 4,400 + 4,400
+    { label: 'Chain pulley blocks', link: ['/categories', 'hoists-trolleys'] }, // 2,900
+    { label: 'Directional control valves', link: ['/categories', 'directional-control-valves'] }, // 2,400
+    { label: 'Vane pumps', link: ['/categories', 'hydraulic-pumps'] }, // 2,400
+    { label: '40 ft shipping container', link: ['/products', 'marine-container-40ft'] }, // 1,900
+    { label: 'Polyhydron valves', link: ['/brands', 'polyhydron'] }, // 1,600
+    { label: 'Quick release couplings', link: ['/categories', 'quick-release-couplings'] }, // 1,600
+    { label: 'Taparia spanner sets', link: ['/categories', 'spanners-wrenches'] }, // 1,600
+    { label: 'Non sparking tools', link: ['/categories', 'non-sparking-tools'] }, // 720
+  ];
+
   readonly reasons = [
     { icon: 'layers', title: 'One counter, many ranges', text: 'Hydraulic valves, couplings and fittings alongside gauges, seals, hand tools and lifting gear — fewer suppliers to manage.' },
     { icon: 'badge-check', title: 'Established manufacturers', text: 'Ranges from known names such as Yuken, Polyhydron, Hydroline, Delta, Asian Hydraulic and Taparia.' },
@@ -82,8 +98,8 @@ export class HomePage {
   constructor() {
     this.catalog.load();
     inject(SeoService).set({
-      fullTitle: 'Western Hardware Mart, Kolkata | Hydraulics, Gauges, Tools & Lifting',
-      description: 'Western Hardware Mart, Netaji Subhas Road, Kolkata — supplier & stockist of hydraulic valves, couplings, fittings, pressure gauges, Taparia hand tools and lifting equipment.',
+      fullTitle: 'Western Hardware Mart, Kolkata | Hydraulic Valves, Gauges & Tools',
+      description: 'Western Hardware Mart, Netaji Subhas Road, Kolkata — hydraulic valves, couplings, fittings, pressure gauges, Taparia hand tools and lifting equipment.',
       path: '/',
       jsonLd: [websiteSchema(), businessSchema()],
     });

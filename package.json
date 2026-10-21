@@ -10,12 +10,8 @@
     "verify:data": "node scripts/verify-data.mjs",
     "prebuild": "node scripts/verify-data.mjs && node scripts/generate-sitemap.mjs",
     "postbuild": "node scripts/postbuild.mjs",
-<<<<<<< HEAD
     "generate:sitemap": "node scripts/generate-sitemap.mjs",
     "indexnow": "node scripts/indexnow.mjs"
-=======
-    "generate:sitemap": "node scripts/generate-sitemap.mjs"
->>>>>>> d752cd3a10eb927d84f814ad98b0f44f1a7459aa
   },
   "prettier": {
     "printWidth": 100,

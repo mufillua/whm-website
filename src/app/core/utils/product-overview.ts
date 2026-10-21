@@ -52,6 +52,8 @@ export interface OverviewContext {
   brand?: string;
   category?: string;
   type?: string;
+  /** Common search name when it differs from the catalogue name, e.g. "D Shackle". */
+  searchName?: string;
 }
 
 /** Summary sentences built from the variant table and specifications (without the closing call to action). */
@@ -100,6 +102,7 @@ export function productOverview(p: Product, ctx: OverviewContext): string {
   const brand = ctx.brand && !p.name.toLowerCase().includes(ctx.brand.toLowerCase()) ? `${ctx.brand} ` : '';
   const model = cleanModel(p) ? ` (${cleanModel(p)})` : '';
   const range = ctx.type ?? ctx.category;
-  const intro = `Western Hardware Mart, Kolkata supplies the ${brand}${p.name}${model}${range ? ` as part of our ${range.toLowerCase()} range` : ''}.`;
+  const alias = ctx.searchName ? ` (${ctx.searchName})` : '';
+  const intro = `Western Hardware Mart, Kolkata supplies the ${brand}${p.name}${alias}${model}${range ? ` as part of our ${range.toLowerCase()} range` : ''}.`;
   return [intro, ...productFacts(p), `Message us on WhatsApp or call ${COMPANY.phoneDisplay} for price and availability.`].join(' ');
 }

@@ -73,15 +73,14 @@ Every page is prerendered to static HTML at build time (`outputMode: "static"` w
 * Code that touches `window`/`document` must run only in the browser (`afterNextRender`, event handlers),
   because the same code runs at build time to prerender.
 
-<<<<<<< HEAD
 * Crawl paths: pagination renders real `?page=N` links; category pages list every product A–Z; `/site-map` links every
   page (footer). Product overview text comes from `src/app/core/utils/product-overview.ts` (restates table data only).
+* Keyword copy: category titles/intros, brand pages (`/brands`, `/brands/:slug`) and product search names live in
+  `src/app/data/category-seo.data.ts` — the keyword research behind them is in docs/SEO-GUIDE.md section 8.
+* `siteUrl` is `https://www.westernhardwaremart.com` because the host redirects the bare domain to www.
 * `npm run indexnow` (after deploying) submits every sitemap URL to IndexNow (Bing etc.) using the key file in `public/`.
 
 Launch steps outside the code (Search Console, Google Business Profile, listings, indexing playbook): **docs/SEO-GUIDE.md**.
-=======
-Launch steps outside the code (Search Console, Google Business Profile, listings): **docs/SEO-GUIDE.md**.
->>>>>>> d752cd3a10eb927d84f814ad98b0f44f1a7459aa
 
 ### Known gaps
 

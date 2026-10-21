@@ -46,6 +46,7 @@ import { IconComponent } from '../icon/icon.component';
           <ul>
             <li><a routerLink="/products">Products</a></li>
             <li><a routerLink="/categories">Categories</a></li>
+            <li><a routerLink="/brands">Brands</a></li>
             <li><a routerLink="/about">About Us</a></li>
             <li><a routerLink="/contact">Contact</a></li>
             <li><a routerLink="/get-a-quote">Get A Quote</a></li>

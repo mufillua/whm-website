@@ -20,7 +20,7 @@
           @if (categoryInfo(); as c) {
             <span class="hero-band__icon"><whm-icon [name]="c.icon" [size]="22" /></span>
             <h1>{{ c.name }}</h1>
-            <p class="lead">{{ c.description }}</p>
+            <p class="lead">{{ categoryIntro() || c.description }}</p>
           } @else {
             <h1>Product catalogue</h1>
             <p class="lead">Hydraulic valves, couplings and fittings, process instruments, hand tools and lifting equipment. Search, filter, then enquire on any product.</p>

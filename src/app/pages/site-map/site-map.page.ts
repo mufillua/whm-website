@@ -24,6 +24,8 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
           <li><a routerLink="/">Home</a></li>
           <li><a routerLink="/products">All products</a></li>
           <li><a routerLink="/categories">Categories</a></li>
+          <li><a routerLink="/brands">Brands</a></li>
+          @for (b of catalog.brands; track b.slug) { <li><a [routerLink]="['/brands', b.slug]">{{ b.name }}</a></li> }
           <li><a routerLink="/about">About us</a></li>
           <li><a routerLink="/contact">Contact</a></li>
           <li><a routerLink="/get-a-quote">Get a quote</a></li>

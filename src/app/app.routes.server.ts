@@ -1,5 +1,5 @@
 import { RenderMode, ServerRoute } from '@angular/ssr';
-import { CATEGORIES } from './data/taxonomy.data';
+import { BRANDS, CATEGORIES } from './data/taxonomy.data';
 
 /**
  * Every public page is prerendered at build time into its own static HTML file, with its real title,
@@ -21,6 +21,13 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: RenderMode.Prerender,
     async getPrerenderParams() {
       return CATEGORIES.map((c) => ({ slug: c.slug }));
+    },
+  },
+  {
+    path: 'brands/:slug',
+    renderMode: RenderMode.Prerender,
+    async getPrerenderParams() {
+      return BRANDS.map((b) => ({ slug: b.slug }));
     },
   },
   // Unknown URLs fall back to the client-rendered app, which shows the 404 page with a noindex tag.

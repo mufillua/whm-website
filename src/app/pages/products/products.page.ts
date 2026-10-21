@@ -5,6 +5,7 @@ import { Product } from '../../core/models/product.model';
 import { CatalogService } from '../../core/services/catalog.service';
 import { SeoService } from '../../core/services/seo.service';
 import { breadcrumbSchema, pageSchema } from '../../core/services/schema';
+import { CATEGORY_SEO } from '../../data/category-seo.data';
 import { CATEGORY_GROUPS } from '../../data/taxonomy.data';
 import { IconComponent } from '../../shared/components/icon/icon.component';
 import { PaginationComponent } from '../../shared/components/pagination/pagination.component';
@@ -132,6 +133,12 @@ export class ProductsPage {
     return chips;
   });
 
+  /** Search-led intro paragraph shown under the category heading. */
+  readonly categoryIntro = computed(() => {
+    const slug = this.lockedCategory();
+    return slug ? (CATEGORY_SEO[slug]?.intro ?? this.categoryInfo()?.description ?? '') : '';
+  });
+
   /** All products in the current category, A–Z (category pages only). */
   readonly categoryIndex = computed(() => {
     const slug = this.lockedCategory();
@@ -164,10 +171,15 @@ export class ProductsPage {
       if (slug && info) {
         const inCat = this.catalog.products().filter((p) => this.catalog.categoryOf(p)?.slug === slug);
         const brandNames = [...new Set(inCat.map((p) => this.catalog.brandOf(p)?.name).filter((b): b is string => !!b))];
-        const count = inCat.length ? `${inCat.length} products${brandNames.length ? ` from ${brandNames.join(', ')}` : ''}. ` : '';
-        const description = `${info.description} ${count}Supplier in Kolkata — enquire with Western Hardware Mart on WhatsApp.`;
+        const seo = CATEGORY_SEO[slug];
+        // Snippet: the search-led intro, trimmed, then the count and the shop — always under ~160 characters.
+        const tail = ` ${inCat.length ? `${inCat.length} products${brandNames.length === 1 ? ` from ${brandNames[0]}` : ''}` : 'Enquire on WhatsApp'} — Western Hardware Mart, Kolkata.`;
+        const base = (seo?.intro ?? info.description).replace(/\s+/g, ' ').trim();
+        const room = 158 - tail.length;
+        const lead = base.length <= room ? base : base.slice(0, room).replace(/\s+\S*$/, '').replace(/[,;:—–(-]+$/, '') + '…';
+        const description = lead + tail;
         this.seo.set({
-          title: `${info.name} Supplier in Kolkata${pageSuffix}`,
+          title: `${seo?.title ?? `${info.name} Supplier in Kolkata`}${pageSuffix}`,
           description,
           path: `/categories/${slug}${pageQuery}`,
           image: this.catalog.categoryImages().get(slug),

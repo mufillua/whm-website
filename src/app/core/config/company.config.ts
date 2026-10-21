@@ -24,7 +24,9 @@ export const COMPANY = {
     'https://www.google.com/maps/search/?api=1&query=' +
     encodeURIComponent('Basundra Tower, 22 Netaji Subhas Road, Kolkata 700001'),
   /** Live domain — used for canonical URLs, the sitemap, robots.txt, social tags and structured data. */
-  siteUrl: 'https://westernhardwaremart.com',
+  // The host serves the site on www (westernhardwaremart.com redirects there), and Google already picked www as the
+  // canonical — every canonical tag, sitemap URL and structured-data URL must use this exact address.
+  siteUrl: 'https://www.westernhardwaremart.com',
   /** Social media profiles shown in the footer. */
   social: [
     {

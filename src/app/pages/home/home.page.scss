@@ -1,7 +1,7 @@
 :host { display: block; }
 
 /* ---------------- HERO ---------------- */
-.hero { position: relative; isolation: isolate; overflow: hidden; padding: clamp(40px, 6vw, 80px) 0 clamp(56px, 7vw, 96px);
+.hero { position: relative; isolation: isolate; overflow: hidden; padding: clamp(40px, 4vw, 80px) 0 clamp(56px, 7vw, 96px);
   background: linear-gradient(135deg, #e7f2f8 0%, #f2f7fb 45%, #efeafa 100%); border-bottom: 1px solid var(--c-line); }
 .hero__bg { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
 .hero__grid { position: absolute; inset: 0; overflow: hidden;
@@ -166,3 +166,11 @@
   .tag__label { font-size: 0.78rem; max-width: 100%; }
   .cta__actions { width: 100%; ::ng-deep .btn { flex: 1 1 100%; } }
 }
+
+/* popular searches → direct links to the pages that answer them */
+.popular { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin: var(--s-8) 0 var(--s-2);
+  h3 { margin: 0; font-family: var(--f-body); font-size: var(--fs-sm); font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--c-muted); }
+  ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  a { display: inline-flex; padding: 7px 13px; border-radius: var(--r-pill); background: var(--bg-raised); border: 1px solid var(--c-line);
+    font-size: var(--fs-sm); font-weight: 650; color: var(--c-primary-deep); text-decoration: none; transition: border-color var(--t-fast), color var(--t-fast); }
+  a:hover { border-color: var(--c-primary); color: var(--c-primary); } }

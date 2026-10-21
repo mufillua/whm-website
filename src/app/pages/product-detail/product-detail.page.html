@@ -26,7 +26,7 @@
 
           <dl class="pd__meta">
             @if (p.modelCode) { <div><dt>Model / code</dt><dd><span class="nameplate"><span>{{ p.modelCode }}</span></span></dd></div> }
-            @if (brand(); as b) { <div><dt>Brand</dt><dd>{{ b.name }}</dd></div> }
+            @if (brand(); as b) { <div><dt>Brand</dt><dd><a [routerLink]="['/brands', b.slug]">{{ b.name }}</a></dd></div> }
             @if (category(); as c) { <div><dt>Category</dt><dd>{{ c.name }}</dd></div> }
           </dl>
 

@@ -4,10 +4,8 @@ import { COMPANY } from '../../core/config/company.config';
 import { CatalogService } from '../../core/services/catalog.service';
 import { SeoService } from '../../core/services/seo.service';
 import { breadcrumbSchema, pageSchema } from '../../core/services/schema';
-<<<<<<< HEAD
 import { cleanModel, productFacts, productOverview } from '../../core/utils/product-overview';
-=======
->>>>>>> d752cd3a10eb927d84f814ad98b0f44f1a7459aa
+import { PRODUCT_SEARCH_NAMES } from '../../data/category-seo.data';
 import { EmailButtonComponent } from '../../shared/components/email-button/email-button.component';
 import { IconComponent } from '../../shared/components/icon/icon.component';
 import { ProductGalleryComponent } from '../../shared/components/product-gallery/product-gallery.component';
@@ -39,7 +37,7 @@ export class ProductDetailPage {
   /** Overview paragraph written from this product's own tables and specs. */
   readonly overview = computed(() => {
     const p = this.product();
-    return p ? productOverview(p, { brand: this.brand()?.name, category: this.category()?.name, type: this.type()?.name }) : '';
+    return p ? productOverview(p, { brand: this.brand()?.name, category: this.category()?.name, type: this.type()?.name, searchName: PRODUCT_SEARCH_NAMES[p.slug] }) : '';
   });
   readonly keySpecs = computed(() => (this.product()?.specifications ?? []).slice(0, 4));
   readonly related = computed(() => {
@@ -66,9 +64,9 @@ export class ProductDetailPage {
       }
       const brand = this.brand()?.name;
       const cat = this.category();
-<<<<<<< HEAD
       const model = cleanModel(p);
-      const name = p.name + (model ? ` (${model})` : '');
+      const searchName = PRODUCT_SEARCH_NAMES[p.slug];
+      const name = p.name + (searchName ? ` – ${searchName}` : '') + (model ? ` (${model})` : '');
       const title = brand && !name.toLowerCase().includes(brand.toLowerCase()) ? `${name} – ${brand}` : name;
       // Snippet: "<Brand> <name> (<model>) — <the product's own text, or facts from its tables> Supplied by … Kolkata."
       const own = (p.shortDescription ?? '').replace(/\s+/g, ' ').trim();
@@ -82,15 +80,6 @@ export class ProductDetailPage {
       const room = 158 - tail.length;
       if (text.length > room) text = text.slice(0, room).replace(/\s+\S*$/, '').replace(/[,;:—–(-]+$/, '').trim() + '…';
       const leadCut = text;
-=======
-      const name = p.name + (p.modelCode && !p.name.includes(p.modelCode) ? ` (${p.modelCode})` : '');
-      const title = brand && !name.toLowerCase().includes(brand.toLowerCase()) ? `${name} – ${brand}` : name;
-      // Lead with the product's own text, then name the brand/model and the Kolkata supplier — trimmed to snippet length.
-      const tail = ` ${[brand, p.modelCode && `model ${p.modelCode}`].filter(Boolean).join(' ')} available from Western Hardware Mart, Kolkata. Enquire for price.`.replace(/^\s+ available/, ' Available');
-      const lead = (p.shortDescription ?? `${p.name}${cat ? ` — ${cat.name.toLowerCase()}` : ''}.`).replace(/\s+/g, ' ').trim();
-      const room = 158 - tail.length;
-      const leadCut = lead.length <= room ? lead : lead.slice(0, room).replace(/\s+\S*$/, '').replace(/[,;:—–-]+$/, '') + '…';
->>>>>>> d752cd3a10eb927d84f814ad98b0f44f1a7459aa
       const crumbs = [
         { name: 'Home', path: '/' },
         { name: 'Products', path: '/products' },

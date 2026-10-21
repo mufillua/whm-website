@@ -1,31 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
-    <loc>https://westernhardwaremart.com/</loc>
+    <loc>https://www.westernhardwaremart.com/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://www.westernhardwaremart.com/products</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://www.westernhardwaremart.com/categories</loc>
     <lastmod>2026-10-20</lastmod>
   </url>
   <url>
-    <loc>https://westernhardwaremart.com/products</loc>
+    <loc>https://www.westernhardwaremart.com/about</loc>
     <lastmod>2026-10-20</lastmod>
   </url>
   <url>
-    <loc>https://westernhardwaremart.com/categories</loc>
+    <loc>https://www.westernhardwaremart.com/contact</loc>
     <lastmod>2026-10-20</lastmod>
   </url>
   <url>
-    <loc>https://westernhardwaremart.com/about</loc>
-    <lastmod>2026-10-14</lastmod>
-  </url>
-  <url>
-    <loc>https://westernhardwaremart.com/contact</loc>
-    <lastmod>2026-10-14</lastmod>
-  </url>
-  <url>
-    <loc>https://westernhardwaremart.com/get-a-quote</loc>
-    <lastmod>2026-10-14</lastmod>
-  </url>
-  <url>
-    <loc>https://westernhardwaremart.com/site-map</loc>
+    <loc>https://www.westernhardwaremart.com/get-a-quote</loc>
     <lastmod>2026-10-20</lastmod>
+  </url>
+  <url>
+    <loc>https://www.westernhardwaremart.com/brands</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://www.westernhardwaremart.com/site-map</loc>
+    <lastmod>2026-10-21</lastmod>
   </url>
 </urlset>

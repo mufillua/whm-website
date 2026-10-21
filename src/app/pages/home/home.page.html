@@ -83,6 +83,12 @@
         <li [style.--d]="i"><whm-category-card [category]="c" [compact]="true" [count]="catalog.categoryCounts().get(c.slug) ?? 0" [image]="catalog.categoryImages().get(c.slug)" /></li>
       }
     </ul>
+    <nav class="popular" aria-labelledby="popular-title">
+      <h3 id="popular-title">Popular products</h3>
+      <ul>
+        @for (p of popular; track p.label) { <li><a [routerLink]="p.link">{{ p.label }}</a></li> }
+      </ul>
+    </nav>
     <div class="center"><a routerLink="/categories" class="btn btn--ghost">View all categories</a></div>
   </div>
 </section>
@@ -188,7 +194,7 @@
     <ul class="brands__list">
       @for (b of catalog.brands; track b.slug) {
         <li>
-          <a [routerLink]="['/products']" [queryParams]="{ brand: b.slug }" [attr.aria-label]="'View ' + b.name + ' products'">
+          <a [routerLink]="['/brands', b.slug]" [attr.aria-label]="b.name + ' products'">
             @if (b.logo) { <img [src]="b.logo" [alt]="b.name" loading="lazy" decoding="async"> } @else { <span>{{ b.name }}</span> }
           </a>
         </li>
