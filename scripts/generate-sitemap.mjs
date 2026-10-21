@@ -70,11 +70,8 @@ const latest = (...days) => days.sort().pop();
 const categoryDay = latest(dataDay, dirDay('src/app/pages/products'), dirDay('src/app/shared/components/pagination'));
 const productDay = latest(dataDay, dirDay('src/app/pages/product-detail'), dirDay('src/app/core/utils'));
 for (const c of CATEGORIES) groups.categories.push({ loc: url('categories/' + c.slug), lastmod: categoryDay });
-<<<<<<< HEAD
 const brandDay = latest(dataDay, dirDay('src/app/pages/brands'), day('src/app/data/category-seo.data.ts'));
 for (const b of BRANDS) groups.brands.push({ loc: url('brands/' + b.slug), lastmod: brandDay });
-=======
->>>>>>> 764562bcfbbe7d67a4c93f989f078214fae87692
 
 let imageCount = 0;
 for (const p of PRODUCTS) {
