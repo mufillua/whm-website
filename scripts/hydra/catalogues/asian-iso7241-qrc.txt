@@ -1,0 +1,66 @@
+Transcription of the image-only catalogue "Asian Hydraulic ISO 7241-2014 Couplings QRC" (the PDF has no selectable
+text). Train.mjs reads this file instead of the PDF pages. Manufacturer contact details are deliberately left out.
+
+=== page 1 ===
+# AH Series — ISO A quick release couplings to ISO 7241:2014 Series A
+AH Series ISO A couplings are the ideal choice where a tough, durable product of superior quality is required. They are perfectly suited to agricultural and industrial applications.
+
+# Construction
+• Carbon steel with trivalent plating (zinc nickel plating available).
+• Fitted with Nitrile seals (Viton seals available).
+• Also available in AISI 316 stainless steel.
+• Also available in Ford style.
+
+# Features
+• Optional zinc nickel plating provides corrosion resistance (1200 hours with no red rust in salt spray tests).
+• Poppet valves have balanced springs.
+• Locking ball system allows quick connection.
+• Bidirectional flow.
+
+# Specifications
+Standard : ISO 7241:2014 Series A
+Sizes : 1/4" to 2" (body size 06 to 50)
+Threads : BSPP, NPTF, SAE and metric
+Maximum working pressure : 400 bar (5800 psi) for body size 06, down to 170 bar for body size 50
+Operating temperature with Nitrile seals : -40°C to 106°C
+Operating temperature with Viton seals : -20°C to 200°C
+
+# Applications
+• General hydraulics
+• Mobile hydraulics
+• Construction
+• Agricultural
+
+# Performance characteristics (coupled, by body size)
+AH06 : max working pressure 400 bar, rated flow 3 l/min
+AH10 : max working pressure 350 bar, rated flow 23 l/min
+AH12 : max working pressure 320 bar, rated flow 45 l/min
+AH19 : max working pressure 300 bar, rated flow 106 l/min
+AH25 : max working pressure 250 bar, rated flow 189 l/min
+AH32 : max working pressure 250 bar, rated flow 288 l/min
+AH40 : max working pressure 230 bar, rated flow 379 l/min
+AH50 : max working pressure 170 bar, rated flow 757 l/min
+
+=== page 2 ===
+# ISO A Quick Release Coupling — AH Series Female: part numbers
+Body size 06 (1/4") : AH06-04G-F (1/4 BSPP), AH06-04N-F (1/4 NPTF)
+Body size 10 (3/8") : AH10-06G-F (3/8 BSPP), AH10-06N-F (3/8 NPTF)
+Body size 12 (1/2") : AH12-08G-F (1/2 BSPP), AH12-08N-F (1/2 NPTF)
+Body size 19 (3/4") : AH19-12G-F (3/4 BSPP), AH19-12N-F (3/4 NPTF)
+Body size 25 (1") : AH25-16G-F (1 BSPP), AH25-16N-F (1 NPTF)
+Body size 32 (1 1/4") : AH32-20G-F (1 1/4 BSPP), AH32-20N-F (1 1/4 NPTF)
+Body size 40 (1 1/2") : AH40-24G-F (1 1/2 BSPP), AH40-24N-F (1 1/2 NPTF)
+Body size 50 (2") : AH50-32G-F (2 BSPP), AH50-32N-F (2 NPTF)
+For all other configurations or thread types please contact the sales office.
+
+=== page 3 ===
+# ISO A Quick Release Coupling — AH Series Male: part numbers
+Body size 06 (1/4") : AH06-04G-M (1/4 BSPP), AH06-04N-M (1/4 NPTF)
+Body size 10 (3/8") : AH10-06G-M (3/8 BSPP), AH10-06N-M (3/8 NPTF)
+Body size 12 (1/2") : AH12-08G-M (1/2 BSPP), AH12-08N-M (1/2 NPTF)
+Body size 19 (3/4") : AH19-12G-M (3/4 BSPP), AH19-12N-M (3/4 NPTF)
+Body size 25 (1") : AH25-16G-M (1 BSPP), AH25-16N-M (1 NPTF)
+Body size 32 (1 1/4") : AH32-20G-M (1 1/4 BSPP), AH32-20N-M (1 1/4 NPTF)
+Body size 40 (1 1/2") : AH40-24G-M (1 1/2 BSPP), AH40-24N-M (1 1/2 NPTF)
+Body size 50 (2") : AH50-32G-M (2 BSPP), AH50-32N-M (2 NPTF)
+For all other configurations or thread types please contact the sales office.

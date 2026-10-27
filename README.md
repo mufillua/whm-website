@@ -8,6 +8,8 @@ npm install
 npm start            # dev server on http://localhost:4200
 npm run build        # runs the data check first, then builds to dist/whm-website/browser
 npm run verify:data  # data-integrity check on its own
+npm run hydra:train  # re-train the Hydra chat assistant after changing a catalogue or scripts/hydra/guide.md
+npm run hydra:ask -- "khb2 sizes"   # ask Hydra from the terminal
 ```
 
 The build output is plain static files. Deploy `dist/whm-website/browser` to any static host and configure an
@@ -25,6 +27,8 @@ SPA fallback (all unknown paths → `index.html`).
 | `src/app/core/services/seo.service.ts` | Per-page title, description, canonical and Open Graph tags |
 | `src/app/shared/components/*` | Navbar, footer, product card/grid/gallery/image, filters, search bar, pagination, category card, WhatsApp/email buttons, quote form, section heading, icon, product carousel (home page, after the hero) |
 | `src/app/pages/*` | Home, products (also serves `/categories/:slug`), product detail, categories, about, contact, get-a-quote, 404 |
+| `src/app/features/hydra/` | Hydra, the product chat assistant: launcher button, chat window, mascot, answer engine and trained knowledge — see `docs/HYDRA.md` |
+| `scripts/hydra/` | Hydra's one-time training (`train.mjs`), its hand-written `guide.md`, the catalogue PDFs (kept out of git) and the training report |
 | `public/assets/products/<brand>/` | Product images extracted from the supplied catalogues |
 | `public/assets/brands/` | Manufacturer logos (transparent PNGs) used on the home page brand strip |
 | `public/assets/brand/` | The supplied logo (background made transparent; shape and colours unchanged) |

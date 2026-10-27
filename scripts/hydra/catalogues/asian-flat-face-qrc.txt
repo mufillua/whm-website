@@ -1,0 +1,46 @@
+Transcription of the image-only catalogue "Asian Hydraulic flat face QRC" (the PDF has no selectable text).
+Train.mjs reads this file instead of the PDF pages. Manufacturer contact details are deliberately left out.
+
+=== page 1 ===
+# AHF04 flat face quick release couplings (hydraulic QRC)
+Flat face hydraulic quick release couplings (QRC) in steel, female and male halves, BSP and NPT threads.
+
+=== page 2 ===
+# AHF04 flat face coupling — ISO 16028, 350 bar
+# Technical data
+Standard : ISO 16028 (DN06 to DN30)
+Occlusion : Flat face
+Locking : Radial balls
+Material : Steel
+Finishing : Zn-Fe (Cr III) and Zn-Ni
+Threads : BSP and NPT
+Standard seals : NBR and PU
+Optional seals : FKM, EPDM or more
+Working temperature : -25°C to +100°C
+Working pressure : 350-500 bar
+Connection under residual pressure : Not allowed
+
+# Sizes (nominal DN / BG / ISO size)
+DN04 / BG 0 / ISO 5 : max working pressure 50 MPa, rated flow 3 l/min, max flow 9 l/min
+DN06 / BG 1 / ISO 6.3 : max working pressure 40 MPa, rated flow 12 l/min, max flow 24 l/min
+DN13 / BG 2 / ISO 10 : max working pressure 35 MPa, rated flow 23 l/min, max flow 46 l/min
+DN20 / BG 3 / ISO 12.5 : max working pressure 35 MPa, rated flow 45 l/min, max flow 90 l/min
+DN22 / BG 4A / ISO 16 : max working pressure 35 MPa, rated flow 74 l/min, max flow 150 l/min
+DN25 / BG 4 / ISO 19 : max working pressure 35 MPa, rated flow 100 l/min, max flow 200 l/min
+DN30 / BG 5 / ISO 25 : max working pressure 35 MPa, rated flow 189 l/min, max flow 280 l/min
+
+=== page 3 ===
+# AHF04 flat face coupling — part numbers (female / male)
+DN04 ISO 5 : BSP 1/8" AH04-G-04-05-F / AH04-G-04-05-M; NPT 1/8" AH04-N-04-05-F / AH04-N-04-05-M
+DN06 ISO 6.3 : BSP 1/4" AH04-G-06-6.3-F / AH04-G-06-6.3-M; NPT 1/4" AH04-N-06-6.3-F / AH04-N-06-6.3-M
+DN13 ISO 10 : BSP 3/8" AH04-G-10-10-F / AH04-G-10-10-M; NPT 3/8" AH04-N-10-10-F / AH04-N-10-10-M; BSP 1/2" AH04-G-13-10-F / AH04-G-13-10-M; NPT 1/2" AH04-N-13-10-F / AH04-N-13-10-M
+
+=== page 4 ===
+# AHF04 flat face coupling — part numbers (female / male)
+DN20 ISO 12.5 : BSP 1/2" AH04-G-13-12.5-F / AH04-G-13-12.5-M; NPT 1/2" AH04-N-13-12.5-F / AH04-N-13-12.5-M; BSP 3/4" AH04-G-20-12.5-F / AH04-G-20-12.5-M; NPT 3/4" AH04-N-20-12.5-F / AH04-N-20-12.5-M
+DN20 ISO 16 : BSP 3/4" AH04-G-20-16-F / AH04-G-20-16-M; NPT 3/4" AH04-N-20-16-F / AH04-N-20-16-M
+DN25 ISO 19 : BSP 1" AH04-G-25-19-F / AH04-G-25-19-M; NPT 1" AH04-N-25-19-F / AH04-N-25-19-M
+
+=== page 5 ===
+# AHF04 flat face coupling — part numbers (female / male)
+DN30 ISO 25 : BSP 1 1/4" AH04-G-32-25-F / AH04-G-32-25-M; NPT 1 1/4" AH04-N-32-25-F / AH04-N-32-25-M

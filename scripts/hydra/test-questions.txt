@@ -1,0 +1,120 @@
+# Sample questions for `npm run hydra:ask -- --file scripts/hydra/test-questions.txt`.
+# A blank line starts a new conversation; lines starting with # are ignored.
+
+what sizes does the KHB2 ball valve come in?
+where is it used?
+do you have it in 3/4 inch
+price?
+
+10 x 11 spanner
+
+where are counterbalance valves used
+
+do you have a 2 ton chain pulley block
+what is the lifting height
+
+hydraulic pressure gauge 0-400 bar 100mm dial
+
+what is a flat face coupling
+how do i use it
+
+AH12-08G-F
+
+difference between relief valve and reducing valve
+
+do you sell gate valves
+
+rexroth solenoid valve 24v
+
+where can i use non sparking tools
+
+tell me about 4DE10
+voltage options?
+
+what is the shop address
+are you open on sunday
+phone number
+do you deliver to bhubaneswar
+do you manufacture these products
+can i get a gst invoice
+
+combination pliers sizes
+
+allen key set
+
+1/2 inch ball valve
+
+pipe wrench 18 inch
+
+hydraulic filter for return line
+
+guage for steam line
+
+marine container
+
+laptop
+
+Polyhydron valves
+
+thank you
+do you have chain pulley block 2 ton
+what is the lifting height
+
+hello
+whats your whatsapp number
+
+i need hydralic guage
+
+taparia screw driver set price
+
+how to use torque wrench
+
+which pressure gauge for steam
+
+do you have pt100
+
+thermowell
+
+needle valve
+
+i want 5 ton shackle
+
+webbing sling 3 ton
+
+pallet truck capacity
+
+yuken vane pump
+
+hydroline return filter
+
+TIFP
+
+sight glass
+
+what is ppr
+
+what are the uses of a flow divider
+
+delta pressure gauge 63mm glycerine filled
+
+1621-8
+
+what's the difference between flat face and iso a coupling
+
+do you have ss ball valve
+
+can you send me the catalogue
+
+i want to buy 50 pcs of combination pliers
+
+asian hydraulic ball valve 1 inch npt
+
+asdfgh
+
+who are you
+
+what is the weather today
+
+where is your shop
+
+ok bye
