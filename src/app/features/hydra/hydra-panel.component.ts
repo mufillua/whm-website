@@ -30,7 +30,7 @@ interface Message {
 }
 
 const STORE = 'whm-hydra-chat-v1';
-const WELCOME_CHIPS = ['What do you sell?', 'KHB2 ball valve sizes', 'Where are counterbalance valves used?', '10 x 11 mm spanners', 'Shop timings'];
+const WELCOME_CHIPS = ['What do you sell?', 'KHB2 ball valve sizes', 'Where are counterbalance valves used?', '10 x 11 mm spanners', 'Pechkas ka size kya hai?', 'Shop timings'];
 
 /**
  * The Hydra chat window. Loaded only when a visitor first opens Hydra (it carries the engine and everything Hydra
@@ -58,7 +58,7 @@ const WELCOME_CHIPS = ['What do you sell?', 'KHB2 ball valve sizes', 'Where are 
         <div class="welcome">
           <whm-hydra-mascot mode="full" [mood]="greeted() ? 'idle' : 'wave'" class="welcome__mascot" />
           <p class="welcome__hi">Hi, I'm <strong>Hydra</strong>!</p>
-          <p class="welcome__sub">I've learned our product catalogues. Ask me about any product — sizes, where it's used, how to use it.</p>
+          <p class="welcome__sub">I've learned our product catalogues. Ask me about any product — sizes, where it's used, how to use it — in English or Hindi.</p>
         </div>
 
         @for (m of messages(); track m.id) {

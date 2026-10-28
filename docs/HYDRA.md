@@ -30,6 +30,28 @@ Nothing is sent anywhere, there is no API key or monthly cost, and it works as l
 3. **Follow-ups.** Hydra remembers what was just discussed, so "what sizes does it come in?", "where is it used?",
    "price?" and "do you have it in 3/4 inch?" refer to the last product.
 
+### Hindi and Hinglish
+
+Customers can ask in Hindi, typed in English letters ("screwdriver ka size kya hai", "kaise use karte hai") or in
+Devanagari ("स्क्रूड्राइवर का साइज़ क्या है"). `engine/hydra-hindi.ts` reads such a message as the English question it
+asks, and Hydra answers it the same way as in English. Product data comes from English catalogues, so the answers
+are in English. English questions don't go through this step.
+
+* **Question words.** It knows kaise (how), kahan (where), kitne ka / daam / rate (price), size / naap (sizes), kya
+  hai / kya hota hai (what is), fark (difference), kaunsa lu (which to choose), milega / chahiye / hai kya (do you
+  have), plus shop questions such as dukan kahan hai, kab khulta hai, delivery karte ho and khud banate ho.
+  Spelling variants are covered (kese, kaisa, chaiye, kitne, kon, konsa…).
+* **Trade names.** Hindi words for tools and parts become the catalogue word: pechkas → screwdriver, pana → spanner,
+  hathoda → hammer, plas → pliers, aari → hacksaw, chheni → chisel, chabi → key, zanjeer → chain, rassi → rope.
+  English words spelt the Hindi way ("silendar", "skrudraivar", "gej") are matched by how they sound.
+* **Sizes said the Hindi way.** aadha inch = 1/2", pauna = 3/4", sava = 1-1/4", dedh = 1-1/2", dhai = 2-1/2";
+  4 sut = 1/2"; do ton = 2 ton; "0 se 10 bar" = 0–10 bar.
+* **Follow-ups.** iska, iski, ye and wo refer to the last product, as "it" does in English ("iska price kya hai").
+
+To teach it a new Hindi word, add it to the lists at the top of `hydra-hindi.ts`: `trade(...)` for product words,
+`variant(...)` for spellings of a question word. No retraining is needed. The Hindi sample questions at the end of
+`scripts/hydra/test-questions.txt` show what it handles.
+
 ### What it never does
 
 * **Quote prices.** Price questions get "our team shares prices on request", with a WhatsApp button and a
@@ -84,3 +106,6 @@ for anything it can't place, it hands over to the team. Coverage follows the cat
 * Taparia answers come from the product tables (sizes and part numbers).
 * Yuken and Hydroline items have only short descriptions on the site, so Hydra uses the general notes in
   `guide.md` and refers detailed questions to the team.
+
+Hindi questions are understood, but answers are in English, because the product data is in English. Rare regional
+words for a tool may not be recognised yet; when a customer uses one, add it to `hydra-hindi.ts`.

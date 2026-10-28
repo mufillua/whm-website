@@ -13,6 +13,7 @@ import {
   HydraReply,
 } from './hydra.types';
 import { INTENT_WORDS, STOPWORDS, SizeAsk, docTokens, editDistance, isCode, normCode, normalise, queryCodes, rowMatches, sizesIn, stripLead, tokens } from './hydra-text';
+import { LOANWORDS, readHindi, soundKey } from './hydra-hindi';
 
 /**
  * Hydra's brain. It runs entirely in the visitor's browser: no API, no server, no data leaves the page.
@@ -344,7 +345,11 @@ export class HydraEngine {
       }
       if (ask !== 'overview') return this.pickOne(ps, ask, ctx);
     }
-    if (!productish && ctx.category && want !== 'overview' && !terms.length) return this.categoryAnswer(ctx.category, [], want, ctx);
+    // after a category answer: "sizes?", "what is its accuracy?", "pressure rating?"
+    const specOnly = terms.length > 0 && terms.every((t) => SPEC_TERMS.has(t));
+    if (!productish && ctx.category && want !== 'overview' && (!terms.length || pronoun || specOnly)) {
+      return this.categoryAnswer(ctx.category, [], want, ctx, undefined, [], terms.filter((t) => this.vocab.has(t)));
+    }
 
     // ---- exact model / part number ("KHB2", "AH12-08G-F", "1621-8")
     if (codeIds.length) {
@@ -377,6 +382,19 @@ export class HydraEngine {
       return this.contactTeam(text, '', near.map((h) => this.products.get(h.doc.id)!), ctx);
     }
 
+    // "hydraulic cylinder": the thing asked for is a word no product name uses ("hydraulic" only describes it) — the team
+    // takes it, never "yes, we supply hydraulic filters"
+    const lastWord = spelled.terms[spelled.terms.length - 1];
+    const words: string[] = q.match(/[a-z0-9]+/g) ?? [];
+    const before = words[words.lastIndexOf(lastWord) - 1] ?? words[words.findIndex((w) => tokens(w)[0] === lastWord) - 1];
+    const qualified = !!before && this.stockVocab.has(tokens(before)[0] ?? ''); // "hydraulic cylinder", not "pressure can it take"
+    if (!nouns.length && qualified && lastWord && lastWord.length >= 4 && !this.stockVocab.has(lastWord) && !this.brandWords.has(lastWord) && !NEUTRAL.has(lastWord) && !aliasTerms.includes(lastWord) && !gibberish(lastWord)) {
+      // not "hydraulic filters" for a hydraulic hose: an item must match more than the describing word
+      const qualifier = tokens(before)[0];
+      const near = this.search(terms, ['product']).filter((h) => [...h.titleMatched].some((t) => t !== qualifier)).slice(0, 3);
+      return this.contactTeam(text, '', near.map((h) => this.products.get(h.doc.id)!), ctx);
+    }
+
     // Words we can't place ("rexroth", "gate" in "gate valve"): a word right before the product noun that no product name
     // uses is a kind of product we may not list — the team handles it, and we show what's closest.
     const phrase = this.headPhrase(text);
@@ -388,6 +406,15 @@ export class HydraEngine {
     });
     let reply = this.findProducts(text, terms, want, sizes, ctx);
     if (missing.size && reply.intent !== 'contact-team' && !reply.intent.endsWith('+team')) reply = this.withTeamNote(reply, this.phrase(terms, missing), text);
+    // a price asked with a size or for a group of items ("18 inch pipe wrench price", "spanner set price"): what we list,
+    // and prices from the team
+    if (want === 'price' && (reply.intent === 'size-list' || reply.intent === 'product-list')) {
+      const at = reply.blocks.findIndex((b) => b.kind === 'contact');
+      const note: HydraBlock = { kind: 'text', text: 'Prices depend on the model, size and quantity — our team will send you a quote.' };
+      if (at >= 0) reply.blocks.splice(at, 0, note);
+      else reply.blocks.push(note, { kind: 'contact', message: `Hello ${COMPANY.name},\n\nPlease share prices for: ${text}\n\nThank you.`, label: 'Ask for a price' });
+      reply.intent += '-price';
+    }
     // "50 pcs of combination pliers": quantities go to the team with the enquiry
     const qty = q.match(/\b(\d+)\s*(pcs?|pieces?|nos?\.?|numbers?|units?|sets?|qty|quantity|dozens?|boxes)\b/);
     if (qty && reply.blocks.some((b) => b.kind === 'products')) {
@@ -563,13 +590,14 @@ export class HydraEngine {
   // -------------------------------------------------------------------------------- what is asked
 
   private wants(q: string): Want {
-    if (/\b(price|prices|pricing|cost|costs|rate|rates|mrp|quotation|quote|how much|cheap|cheapest|expensive|discount|rs\.?|₹)\b/.test(q)) return 'price';
+    // "how much pressure can it take" asks for a spec, not a price
+    if (/\b(price|prices|pricing|cost|costs|rate|rates|mrp|quotation|quote|how much(?! (pressure|load|weight|temperature|flow|current|voltage|torque|force|capacity|oil|power))|cheap|cheapest|expensive|discount|rs\.?|₹)\b/.test(q)) return 'price';
     if (/\b(difference|differ|compare|comparison|versus|vs\.?)\b/.test(q)) return 'compare';
     if (/\b(how (do|should|can|to|would)|install|installation|installing|fitting it|fit it|mount it|mounting|operate|operating|operation|adjust|adjustment|setting|set the|maintain|maintenance|connect|connecting|calibrat|tighten|safety|precaution|care)\b/.test(q)) return 'howto';
     if (/\b(sizes?|dimensions?|measurements?|variants?|bore|thread sizes?|lengths?|capacit(y|ies)|which sizes|what sizes|come in|comes in|available in|in what size)\b/.test(q)) return 'sizes';
     if (/\b(uses?|used|usage|applications?|purpose|what is it for|what for|where (is|are|can|do)|suitable|why)\b/.test(q)) return 'uses';
     if (/\b(which (one|should|is best|to choose)|which \w+( \w+)? (for|to use)|choose|choosing|select|selection|recommend|suggest|best for|suitable for)\b/.test(q)) return 'choose';
-    if (/\b(specs?|specifications?|technical|ratings?|pressure rating|max(imum)? pressure|working pressure|temperature|material|weight|flow rate|port|standard|accuracy|voltage)\b/.test(q)) return 'specs';
+    if (/\b(specs?|specifications?|technical|ratings?|pressure rating|max(imum)? pressure|working pressure|temperature|material|weight|flow rate|port|standard|accuracy|voltage)\b|\bhow much (pressure|load|weight)\b/.test(q)) return 'specs';
     if (/\b(in stock|stock|available|availability|lead time|ready stock|when can i get|how soon)\b/.test(q)) return 'stock';
     return 'overview';
   }
@@ -952,6 +980,32 @@ export class HydraEngine {
       return this.contactTeam(`${sizes.map((s) => s.label).join(' ')} ${c.name}`, `For ${name} in **${sizes.map((s) => s.label).join(', ')}**, `, this.rank(ranked, pool).slice(0, 3), ctx, this.listedSizes(this.rank(ranked, pool).slice(0, 6), sizes));
     }
 
+    // "pressure gauges" then "accuracy?" / "pressure rating?": that line of each product's specifications
+    const specTerms = terms.filter((t) => SPEC_TERMS.has(t));
+    if (want === 'specs' && specTerms.length) {
+      this.focus = specTerms;
+      const listed = this.rank(ranked, pool)
+        .map((p) => {
+          const f = this.specFocus(this.allSpecs(p), p);
+          return { p, value: f.rows.map(([l, v]) => (f.rows.length > 1 ? `${l}: ${v}` : v)).join('; ') };
+        })
+        .filter((x) => x.value);
+      if (listed.length) {
+        const shown = listed.slice(0, 8);
+        return {
+          blocks: [
+            { kind: 'text', text: `From the catalogue, for our ${name}:` },
+            { kind: 'table', columns: ['Product', capitalise(specTerms.join(' '))], rows: shown.map((x) => [shortName(x.p.name), x.value]), note: listed.length > 8 ? `…and ${listed.length - 8} more.` : undefined },
+            { kind: 'products', items: shown.slice(0, MAX_CARDS).map((x) => this.card(x.p)) },
+            { kind: 'links', items: [{ label: `See all ${c.name}`, url: `/categories/${slug}`, queryParams: brand ? { brand } : undefined }] },
+          ],
+          chips: shown.slice(0, 3).map((x) => shortName(x.p.name)),
+          context: { products: shown.slice(0, 6).map((x) => x.p.slug), category: slug, brand },
+          intent: 'category-specs-table',
+        };
+      }
+    }
+
     let lead = '';
     if (want === 'uses' && g?.uses) lead = `**Where ${name} are used:** ${g.uses}`;
     else if (want === 'howto' && g?.howto) lead = `**Using ${name}:** ${g.howto}`;
@@ -1067,6 +1121,8 @@ export class HydraEngine {
     if (/^(thanks?|thank you|thx|ty|great|awesome|perfect|nice|cool|ok(ay)?|got it|fine|done|helpful)( (so much|a lot|hydra))?[\s!.]*$/.test(q))
       return r(`You're welcome! Anything else I can help you find?`, 'thanks');
     if (/^((ok|okay|thanks|thank you|thx)[\s,]+)?(bye|bye bye|goodbye|see you|see ya|tata|good night|cya)[\s!.]*$/.test(q)) return r(`Goodbye! Message us on WhatsApp any time you need something.`, 'bye', []);
+    if (/^(no+|nope|nah|no thanks?( you)?|nothing( else)?|that'?s (all|it)|thats (all|it)|all good|i'?m good|not now)[\s!.]*$/.test(q))
+      return r(`Okay! If you need anything later, ask me here or message our team on WhatsApp.`, 'done', []);
     if (/\b(who are you|what are you|your name|are you (a )?(bot|human|robot|real|ai|person)|who made you|what is hydra)\b/.test(q))
       return r(`I'm Hydra, the product assistant for ${COMPANY.name}. I've learned our product catalogues, so I can help with sizes, uses and specifications. For prices, stock and orders, our team takes over on WhatsApp or phone.`, 'identity');
     if (/\b(what can you do|help me|how (can|do) you help|how does this work|what (can|should) i ask)\b|^help[\s!?.]*$/.test(q)) return this.help(ctx);
@@ -1128,7 +1184,8 @@ export class HydraEngine {
     for (const f of this.data.knowledge.faqs ?? []) {
       for (const phrase of f.ask) {
         const re = new RegExp(`(^|\\W)${phrase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(\\W|$)`);
-        if (re.test(q)) {
+        // Hinglish phrases in guide.md ("banate ho") match what the customer typed
+        if (re.test(q) || (this.romanQ && re.test(this.romanQ))) {
           const score = phrase.split(' ').length;
           if (!best || score > best.score) best = { a: f.answer, score, id: f.id };
         }
@@ -1146,6 +1203,8 @@ export class HydraEngine {
   private priceGeneral(ctx: HydraContext): HydraReply {
     const p = ctx.products.length ? this.products.get(ctx.products[0]) : undefined;
     if (p) return this.productAnswer(p, 'price', [], ctx);
+    // after a category answer ("screwdrivers" … "price?"): prices for that category
+    if (ctx.category && this.categories.has(ctx.category)) return this.categoryAnswer(ctx.category, [], 'price', ctx, ctx.brand);
     return {
       blocks: [
         { kind: 'text', text: `Prices depend on the product, size, quantity and current stock, so our team shares them on request — usually the same working day. Tell them what you need on WhatsApp, or use the quote form.` },
@@ -1195,7 +1254,7 @@ export class HydraEngine {
       blocks: [
         { kind: 'text', text: `I can help you find products and answer questions about them. Try asking:` },
         { kind: 'list', items: ['"What sizes does the KHB2 ball valve come in?"', '"Where are counterbalance valves used?"', '"Do you have 10 x 11 mm spanners?"', '"How do I choose a pressure gauge?"'] },
-        { kind: 'text', text: 'For prices, stock and orders, our team replies on WhatsApp.' },
+        { kind: 'text', text: 'You can ask in English or Hindi ("pechkas ka size kya hai?"). For prices, stock and orders, our team replies on WhatsApp.' },
       ],
       chips: START_CHIPS,
       context: ctx,
@@ -1256,11 +1315,53 @@ export class HydraEngine {
 
   /** The current question, for helpers that need the exact wording. */
   private lastQ = '';
+  /** The current question in Roman letters when it was asked in Hindi / Hinglish (for Hinglish FAQ phrases). */
+  private romanQ = '';
 
   /** Answers one message. `ctx` is the context returned with the previous reply (for follow-up questions). */
   answer(input: string, ctx: HydraContext = { products: [] }): HydraReply {
-    this.lastQ = normalise(input);
-    return this.respond(input, ctx);
+    // Hindi / Hinglish ("screwdriver ka size kya hai", "कैसे इस्तेमाल करें") is read as the English question it asks;
+    // English passes through unchanged.
+    const h = readHindi(input, (w, fromDevanagari) => this.resolveWord(w, fromDevanagari));
+    this.lastQ = normalise(h.text);
+    this.romanQ = h.hindi ? normalise(h.roman) : '';
+    return this.respond(h.text, ctx);
+  }
+
+  // ------------------------------------------------------------------------------ Hindi spellings
+
+  private soundIndex?: Map<string, string>;
+
+  /**
+   * For a word in a Hindi message: the word itself if Hydra knows it, or the catalogue word it sounds like when it is
+   * an English word spelt the Hindi way ("silendar" -> cylinder, "skrudraivar" -> screwdriver). Undefined if neither.
+   */
+  private resolveWord(w: string, fromDevanagari: boolean): string | undefined {
+    if (STOPWORDS.has(w) || INTENT_WORDS.has(w) || /\d/.test(w)) return w;
+    const t = tokens(w, true)[0];
+    if (t && (this.vocab.has(t) || this.heads.has(t))) return w;
+    const key = soundKey(w);
+    // short keys are too ambiguous for words typed in English letters
+    if (key.length < (fromDevanagari ? 3 : 4)) return undefined;
+    const hit = this.sounds().get(key);
+    return hit && Math.abs(hit.length - w.length) <= 4 ? hit : undefined;
+  }
+
+  private sounds(): Map<string, string> {
+    if (this.soundIndex) return this.soundIndex;
+    const index = new Map<string, string>();
+    const best = new Map<string, number>();
+    const add = (word: string, weight: number) => {
+      if (word.length < 4 || !/^[a-z]+$/.test(word)) return;
+      const key = soundKey(word);
+      if (key.length < 3 || (best.get(key) ?? -1) >= weight) return;
+      index.set(key, word);
+      best.set(key, weight);
+    };
+    for (const [w, n] of this.vocab) add(w, n);
+    for (const w of LOANWORDS) add(w, 1e6); // curated words win over chance matches
+    this.soundIndex = index;
+    return index;
   }
 }
 
@@ -1268,6 +1369,8 @@ export class HydraEngine {
 
 /** Descriptive words that shouldn't send a customer to the team just because the catalogue never uses them. */
 const NEUTRAL = new Set('dial heavy duty light small big large mini medium quality original genuine branded new cheap best strong industrial durable good professional premium standard normal regular full complete hand manual automatic auto kolkata india urgent urgently asap pc pcs piece pieces nos unit units qty quantity dozen lot buy purchase order rate'.split(' '));
+/** Words that name a specification, not a product ("pressure rating", "max temperature"). */
+const SPEC_TERMS = new Set(tokens('pressure maximum max minimum min working rated temperature material weight accuracy voltage current capacity load flow power torque speed thread port connection dial length height lift stroke bore viscosity'));
 /** Quantity words ("50 pcs", "2 nos") — handled as a quantity, never searched. */
 const QTY_WORDS = new Set('pc pcs piece pieces no nos number numbers unit units qty quantity dozen dozens lot lots box boxes buy purchase order'.split(' '));
 /** Last words of product names that aren't product nouns. */

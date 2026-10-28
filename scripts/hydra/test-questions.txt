@@ -118,3 +118,47 @@ what is the weather today
 where is your shop
 
 ok bye
+
+# ---- Hindi / Hinglish (read as the English question, answered in English)
+screwdriver ka size kya hai
+kaise use karte hai
+iska price kya hai
+
+pechkas kitne ka hai
+
+18 inch ka pipe wrench milega?
+
+aadha inch ka ball valve hai kya
+
+4 sut ka ball valve milega
+
+do ton ka chain pulley block chahiye
+
+pressure gauge kaise lagate hai
+iski accuracy kitni hai
+
+ball valve aur check valve me kya fark hai
+
+relief valve kahan use hota hai
+
+konsa pressure gauge lu
+
+taparia ka pana dikhao
+
+hydraulic silendar chahiye
+
+स्क्रूड्राइवर का साइज़ क्या है
+
+प्रेशर गेज कहाँ इस्तेमाल होता है
+
+हथौड़ा चाहिए
+
+aapki dukan kahan hai
+
+sunday ko khula hai?
+
+delivery karte ho kya
+
+aap khud banate ho?
+
+dhanyavad

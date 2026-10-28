@@ -28,7 +28,8 @@ export const INTENT_WORDS = new Set(
     'spec specs specification specifications technical rating ratings datasheet feature features ' +
     'price prices pricing cost costs rate rates mrp quote quotation cheap cheapest expensive discount ' +
     'difference differences compare comparison versus vs better between ' +
-    'explain describe meaning mean means define definition overview'
+    'explain describe meaning mean means define definition overview ' +
+    'choose choosing select selecting selection recommend recommended recommendation suggest suggestion'
   ).split(/\s+/),
 );
 
