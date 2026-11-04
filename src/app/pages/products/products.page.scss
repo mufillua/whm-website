@@ -84,3 +84,13 @@
   li { break-inside: avoid; padding: 7px 0; border-bottom: 1px solid var(--c-line); font-size: 0.9rem; line-height: 1.35; }
   a { color: var(--c-ink-2); text-decoration: none; } a:hover { color: var(--c-primary); text-decoration: underline; }
   span { display: inline-block; margin-left: 6px; font-size: 0.72rem; font-weight: 700; color: var(--c-indigo); } }
+
+/* "Choosing …" buying guide under the products (category pages, page 1) */
+.cat-guide { margin-top: var(--s-12); padding-top: var(--s-8); border-top: 1px solid var(--c-line); max-width: 74ch;
+  h2 { font-size: var(--fs-2xl); margin: 0 0 var(--s-4); color: var(--c-ink); }
+  p { margin: 0 0 var(--s-4); color: var(--c-ink-2); line-height: 1.75; } }
+.cat-guide__related { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; margin-top: var(--s-6) !important; font-size: var(--fs-sm);
+  span { font-weight: 700; color: var(--c-muted); }
+  a { padding: 6px 12px; border-radius: var(--r-pill); border: 1px solid var(--c-line-strong); background: var(--bg-raised); color: var(--c-primary-deep);
+    font-weight: 650; text-decoration: none; }
+  a:hover { border-color: var(--c-primary); background: var(--c-sky-2); } }

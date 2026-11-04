@@ -5,6 +5,7 @@ import { Product } from '../../core/models/product.model';
 import { CatalogService } from '../../core/services/catalog.service';
 import { SeoService } from '../../core/services/seo.service';
 import { breadcrumbSchema, pageSchema } from '../../core/services/schema';
+import { CATEGORY_GUIDES } from '../../data/category-guides.data';
 import { CATEGORY_SEO } from '../../data/category-seo.data';
 import { CATEGORY_GROUPS } from '../../data/taxonomy.data';
 import { IconComponent } from '../../shared/components/icon/icon.component';
@@ -137,6 +138,18 @@ export class ProductsPage {
   readonly categoryIntro = computed(() => {
     const slug = this.lockedCategory();
     return slug ? (CATEGORY_SEO[slug]?.intro ?? this.categoryInfo()?.description ?? '') : '';
+  });
+
+  /** "Choosing …" buying guide at the foot of a category page — page 1 only, so paginated pages don't repeat it. */
+  readonly categoryGuide = computed(() => {
+    const slug = this.lockedCategory();
+    const guide = slug && this.categoryInfo() && this.currentPage() === 1 ? CATEGORY_GUIDES[slug] : undefined;
+    if (!guide) return undefined;
+    const related = guide.related
+      .map((s) => this.catalog.category(s))
+      .filter((c): c is NonNullable<typeof c> => !!c)
+      .map((c) => ({ slug: c.slug, name: c.name }));
+    return { ...guide, related };
   });
 
   /** All products in the current category, A–Z (category pages only). */

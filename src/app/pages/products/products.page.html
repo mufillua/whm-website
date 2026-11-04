@@ -106,6 +106,18 @@
           </ul>
         </details>
       }
+
+      @if (categoryGuide(); as g) {
+        <section class="cat-guide" aria-labelledby="cat-guide-title">
+          <h2 id="cat-guide-title">{{ g.heading }}</h2>
+          @for (p of g.paragraphs; track $index) { <p>{{ p }}</p> }
+          @if (g.related.length) {
+            <p class="cat-guide__related"><span>Related categories:</span>
+              @for (r of g.related; track r.slug) { <a [routerLink]="['/categories', r.slug]">{{ r.name }}</a> }
+            </p>
+          }
+        </section>
+      }
     </div>
   </div>
 </section>
